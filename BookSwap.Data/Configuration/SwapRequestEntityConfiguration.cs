@@ -1,7 +1,6 @@
 ﻿namespace BookSwap.Data.Configuration
 {
-    using BookSwap.Data.Models;
-    using Microsoft.AspNetCore.Identity;
+    using Models;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
     public class SwapRequestEntityConfiguration : IEntityTypeConfiguration<SwapRequest>
@@ -21,10 +20,11 @@
                 .HasForeignKey(sr => sr.BookId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-               builder.HasOne<IdentityUser>()
-                .WithMany()
-                .HasForeignKey(sr => sr.ApplicantId)
-                .OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(sr => sr.Applicant)
+            .WithMany()
+            .HasForeignKey(sr => sr.ApplicantId)
+            .OnDelete(DeleteBehavior.Restrict);
+
         }
     }
 }

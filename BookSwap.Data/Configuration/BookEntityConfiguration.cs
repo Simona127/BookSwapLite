@@ -1,9 +1,8 @@
 ﻿namespace BookSwap.Data.Configuration
 {
+    using Models;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
-    using BookSwap.Data.Models;
-    using Microsoft.AspNetCore.Identity;
 
     public class BookEntityConfiguration : IEntityTypeConfiguration<Book>
     {
@@ -30,9 +29,11 @@
                 .WithMany(g => g.Books)
                 .HasForeignKey(b => b.GenreId);
 
-            builder.HasOne<IdentityUser>()
-                .WithMany()
-                .HasForeignKey(b => b.OwnerId);
+            builder.HasOne(b => b.Owner)
+            .WithMany()
+            .HasForeignKey(b => b.OwnerId)
+            .OnDelete(DeleteBehavior.Restrict);
+
         }
     }
 }

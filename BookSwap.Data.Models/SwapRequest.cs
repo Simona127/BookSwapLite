@@ -2,19 +2,14 @@
 {
     using BookSwap.Data.Models.Common;
     using Microsoft.AspNetCore.Identity;
-    using System;
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     public class SwapRequest
     {
         [Key]
         public int Id { get; set; }
         [Required]
-        [ForeignKey(nameof(Book))]
+        [ForeignKey(nameof(BookId))]
         public int BookId { get; set; }
         public virtual Book Book { get; set; } = null!;
         [Required]
