@@ -1,6 +1,7 @@
 namespace BookSwapLite
 {
     using BookSwap.Data;
+    using BookSwap.Services.Books;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
     public class Program
@@ -37,6 +38,9 @@ namespace BookSwapLite
 
             })
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            builder.Services.AddScoped<IBookService, BookService>();
+
             builder.Services.AddControllersWithViews();
 
             WebApplication app = builder.Build();
