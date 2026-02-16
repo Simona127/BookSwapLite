@@ -1,3 +1,10 @@
 <Solution>
-  <Project Path="BookSwapLite/BookSwapLite.csproj" />
+  <Folder Name="/Data/">
+    <Project Path="BookSwap.Data.Models/BookSwap.Data.Models.csproj" />
+    <Project Path="BookSwap.Data/BookSwap.Data.csproj" />
+  </Folder>
+  <Folder Name="/Web/">
+    <Project Path="BookSwap.Web.ViewModels/BookSwap.Web.ViewModels.csproj" />
+    <Project Path="BookSwapLite/BookSwapLite.csproj" />
+  </Folder>
 </Solution>

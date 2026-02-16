@@ -1,9 +1,8 @@
-using BookSwapLite.Data;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-
 namespace BookSwapLite
 {
+    using BookSwapLite.Data;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.EntityFrameworkCore;
     public class Program
     {
         public static void Main(string[] args)

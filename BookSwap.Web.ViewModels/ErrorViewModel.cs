@@ -1,4 +1,4 @@
-namespace BookSwapLite.ViewModels
+namespace BookSwapLite.Web.ViewModels
 {
     public class ErrorViewModel
     {

@@ -1,9 +1,8 @@
-using BookSwapLite.ViewModels;
-using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
-
-namespace BookSwapLite.Controllers
+namespace BookSwapLite.Web.Controllers
 {
+    using BookSwapLite.Web.ViewModels;
+    using Microsoft.AspNetCore.Mvc;
+    using System.Diagnostics;
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
