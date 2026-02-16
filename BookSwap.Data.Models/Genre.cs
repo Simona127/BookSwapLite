@@ -13,7 +13,7 @@
         [Required]
         [StringLength(50, MinimumLength = 3)]
         public string GenreName { get; set; } = null!;
-        public ICollection<Book> Books { get; set; }
+        public virtual ICollection<Book> Books { get; set; }
         = new HashSet<Book>();
     }
 }

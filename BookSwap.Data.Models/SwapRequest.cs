@@ -16,11 +16,11 @@
         [Required]
         [ForeignKey(nameof(Book))]
         public int BookId { get; set; }
-        public Book Book { get; set; } = null!;
+        public virtual Book Book { get; set; } = null!;
         [Required]
         [ForeignKey(nameof(Applicant))]
         public string ApplicantId { get; set; } = null!;
-        public IdentityUser Applicant { get; set; } = null!;
+        public virtual IdentityUser Applicant { get; set; } = null!;
 
         [Required]
         public StatusType Status { get; set; }= StatusType.Pending;

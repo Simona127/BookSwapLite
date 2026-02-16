@@ -1,5 +1,6 @@
 namespace BookSwapLite
 {
+    using BookSwap.Data;
     using BookSwapLite.Data;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
