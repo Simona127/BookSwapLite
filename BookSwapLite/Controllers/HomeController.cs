@@ -1,4 +1,4 @@
-using BookSwapLite.Models;
+using BookSwapLite.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
