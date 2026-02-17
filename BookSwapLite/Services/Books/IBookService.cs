@@ -1,19 +1,22 @@
 ﻿namespace BookSwap.Services.Books
 {
     using BookSwap.Web.ViewModels.Books;
-    using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Mvc.Rendering;
 
     public interface IBookService
     {
+        Task<IEnumerable<BookIndexViewModel>> GetAllBooksAsync();
+
+        Task<IEnumerable<SelectListItem>> GetGenresAsync();
+
         Task CreateAsync(BookFormModel model, string userId);
 
-        Task<IEnumerable<BookIndexViewModel>> GetAllAsync();
+        Task<BookDetailsViewModel> GetDetailsAsync(int id);
 
-        Task<BookFormModel> GetForEditAsync(int id);
+        Task<BookFormModel> GetForEditAsync(int id); 
 
         Task UpdateAsync(int id, BookFormModel model);
 
         Task DeleteAsync(int id);
-        Task<BookDetailsViewModel> GetDetailsAsync(int id);
     }
 }

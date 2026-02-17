@@ -18,19 +18,24 @@
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            var books = await bookService.GetAllAsync();
+            var books = await bookService.GetAllBooksAsync();
             return View(books);
         }
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            var model = new BookFormModel();
+
+            model.Genres = await bookService.GetGenresAsync();
+
+            return View(model);
         }
         [HttpPost]
         public async Task<IActionResult> Create(BookFormModel model)
         {
             if (!ModelState.IsValid)
             {
+                model.Genres = await bookService.GetGenresAsync();
                 return View(model);
             }
 
@@ -48,6 +53,9 @@
         public async Task<IActionResult> Edit(int id)
         {
             var model = await bookService.GetForEditAsync(id);
+
+            model.Genres = await bookService.GetGenresAsync();
+
             return View(model);
         }
         [HttpPost]
@@ -55,9 +63,12 @@
         {
             if (!ModelState.IsValid)
             {
+                model.Genres = await bookService.GetGenresAsync();
+
                 return View(model);
             }
             await bookService.UpdateAsync(id, model);
+
             return RedirectToAction(nameof(Index));
         }
         [HttpPost]

@@ -46,6 +46,8 @@ namespace BookSwapLite
 
             builder.Services.AddScoped<ISwapRequestService, SwapRequestService>();
 
+            builder.Services.AddScoped<IBookService, BookService>();
+
             WebApplication app = builder.Build();
 
             // Configure the HTTP request pipeline.

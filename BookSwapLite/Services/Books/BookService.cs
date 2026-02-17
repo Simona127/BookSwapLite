@@ -3,6 +3,7 @@
     using BookSwap.Data;
     using BookSwap.Data.Models;
     using BookSwap.Web.ViewModels.Books;
+    using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.EntityFrameworkCore;
 
     public class BookService : IBookService
@@ -12,7 +13,7 @@
         {
             this.context = context;
         }
-        public async Task<IEnumerable<BookIndexViewModel>> GetAllAsync()
+        public async Task<IEnumerable<BookIndexViewModel>> GetAllBooksAsync()
         {
             return await context.Books
                 .Select(b => new BookIndexViewModel
@@ -20,6 +21,16 @@
                     Id = b.Id,
                     Title = b.Title,
                     Author = b.Author
+                })
+                .ToListAsync();
+        }
+        public async Task<IEnumerable<SelectListItem>> GetGenresAsync()
+        {
+            return await context.Genres
+                .Select(g => new SelectListItem
+                {
+                    Value = g.Id.ToString(),
+                    Text = g.GenreName
                 })
                 .ToListAsync();
         }
@@ -69,6 +80,7 @@
             }
             return new BookFormModel
             {
+                Id = book.Id,
                 Title = book.Title,
                 Author = book.Author,
                 GenreId = book.GenreId,
