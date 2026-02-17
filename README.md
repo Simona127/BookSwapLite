@@ -83,6 +83,7 @@ Requests for My Books
 The app automatically adds several genres when the database is created, but books must be added manually through the UI.
 
 Here are some example books that can be used for testing:
+
 **The Great Gatsby**
 Title: The Great Gatsby
 Author: F. Scott Fitzgerald
