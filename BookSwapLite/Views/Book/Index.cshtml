@@ -39,6 +39,15 @@
                        class="btn btn-danger btn-sm">
                         Delete
                     </a>
+                    <form asp-controller="SwapRequest"
+                          asp-action="Create"
+                          method="post">
+                        <input type="hidden" name="bookId" value="@book.Id" />
+                        <button type="submit" class="btn btn-warning btn-sm">
+                            Request Swap
+                        </button>
+                    </form>
+
                 </td>
             </tr>
         }

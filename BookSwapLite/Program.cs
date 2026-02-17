@@ -2,6 +2,7 @@ namespace BookSwapLite
 {
     using BookSwap.Data;
     using BookSwap.Services.Books;
+    using BookSwapLite.Services.SwapRequests;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
     public class Program
@@ -42,6 +43,8 @@ namespace BookSwapLite
             builder.Services.AddScoped<IBookService, BookService>();
 
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddScoped<ISwapRequestService, SwapRequestService>();
 
             WebApplication app = builder.Build();
 
