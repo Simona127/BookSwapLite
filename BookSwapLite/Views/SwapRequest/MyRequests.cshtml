@@ -1,0 +1,46 @@
+﻿@model IEnumerable<BookSwap.Web.ViewModels.SwapRequests.SwapRequestOwnerViewModel>
+
+@{
+    ViewData["Title"] = "Swap Requests for My Books";
+}
+
+<h2 class="mt-3">Swap Requests for My Books</h2>
+
+@if (!Model.Any())
+{
+    <p>No swap requests yet.</p>
+}
+else
+{
+    <table class="table table-striped mt-4">
+        <thead>
+            <tr>
+                <th>Book</th>
+                <th>Requested By</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var req in Model)
+            {
+                <tr>
+                    <td>@req.BookTitle</td>
+                    <td>@req.ApplicantUsername</td>
+                    <td>@req.CreatedOn.ToShortDateString()</td>
+                    <td>@req.Status</td>
+                    <td>
+                        <form asp-action="Approve" asp-route-id="@req.Id" method="post" style="display:inline;">
+                            <button class="btn btn-success btn-sm">Approve</button>
+                        </form>
+
+                        <form asp-action="Reject" asp-route-id="@req.Id" method="post" style="display:inline;">
+                            <button class="btn btn-danger btn-sm">Reject</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

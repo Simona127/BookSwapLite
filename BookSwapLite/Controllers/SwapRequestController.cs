@@ -35,5 +35,14 @@
 
             return RedirectToAction("Index", "Book");
         }
+        [Authorize]
+        public async Task<IActionResult> MyRequests()
+        {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var myRequests = await swapRequestService.GetRequestsForOwnerAsync(userId);
+
+            return View(myRequests);
+        }
     }
 }
