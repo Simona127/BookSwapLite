@@ -16,6 +16,15 @@
             builder.HasMany(g => g.Books)
                 .WithOne(b => b.Genre)
                 .HasForeignKey(b => b.GenreId);
+
+            builder.HasData(
+                    new Genre { Id = 1, GenreName = "Drama" },
+                    new Genre { Id = 2, GenreName = "Thriller" },
+                    new Genre { Id = 3, GenreName = "Science Fiction" },
+                    new Genre { Id = 4, GenreName = "Fantasy" },
+                    new Genre { Id = 5, GenreName = "Mystery" },
+                    new Genre { Id = 6, GenreName = "Romance" }
+                );
         }
     }
 }
