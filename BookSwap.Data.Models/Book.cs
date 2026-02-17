@@ -28,9 +28,8 @@
         [MaxLength(30)]
         public string Condition { get; set; } = null!;
 
-        [Required]
         [ForeignKey(nameof(Owner))]
-        public string OwnerId { get; set; } = null!;
-        public virtual IdentityUser Owner { get; set; } = null!;
+        public string? OwnerId { get; set; }
+        public virtual IdentityUser? Owner { get; set; } 
     }
 }

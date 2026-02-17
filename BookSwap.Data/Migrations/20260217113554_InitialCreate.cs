@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace BookSwap.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -180,7 +182,7 @@ namespace BookSwap.Data.Migrations
                     GenreId = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     Condition = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    OwnerId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    OwnerId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -225,6 +227,19 @@ namespace BookSwap.Data.Migrations
                         principalTable: "Books",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Genres",
+                columns: new[] { "Id", "GenreName" },
+                values: new object[,]
+                {
+                    { 1, "Drama" },
+                    { 2, "Thriller" },
+                    { 3, "Science Fiction" },
+                    { 4, "Fantasy" },
+                    { 5, "Mystery" },
+                    { 6, "Romance" }
                 });
 
             migrationBuilder.CreateIndex(

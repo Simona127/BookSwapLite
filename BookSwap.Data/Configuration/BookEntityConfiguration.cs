@@ -33,7 +33,6 @@
             .WithMany()
             .HasForeignKey(b => b.OwnerId)
             .OnDelete(DeleteBehavior.Restrict);
-
         }
     }
 }
