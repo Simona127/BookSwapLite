@@ -41,6 +41,7 @@
         public async Task<IActionResult> Details(int id)
         {
             var book = await bookService.GetDetailsAsync(id);
+
             return View(book);
         }
         [HttpGet]
