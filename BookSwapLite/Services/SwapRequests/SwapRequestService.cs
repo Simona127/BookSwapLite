@@ -15,8 +15,20 @@
         }
         public async Task CreateRequestAsync(int bookId, string applicantId)
         {
+            var book = await context.Books
+                .FirstOrDefaultAsync(b => b.Id == bookId);
+
+            if (book == null)
+            {
+                throw new InvalidOperationException("Book not found.");
+            }
+
+            if(book.OwnerId == applicantId)
+            {
+                throw new InvalidOperationException("You cannot request your own book.");
+            }
             bool requestExists = await context.SwapRequests
-                .AnyAsync(sr => sr.BookId == bookId && sr.ApplicantId == applicantId);
+               .AnyAsync(sr => sr.BookId == bookId && sr.ApplicantId == applicantId);
 
             if (requestExists)
             {
@@ -71,7 +83,8 @@
                     Id = sr.Id,
                     BookTitle = sr.Book.Title,
                     ApplicantUsername = sr.Applicant.UserName,
-                    Status = sr.Status.ToString()
+                    CreatedOn = DateTime.UtcNow,
+                    Status = StatusType.Pending
                 })
                 .ToListAsync();
         }

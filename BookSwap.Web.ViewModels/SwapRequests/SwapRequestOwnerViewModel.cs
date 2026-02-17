@@ -1,10 +1,7 @@
 ﻿namespace BookSwap.Web.ViewModels.SwapRequests
 {
+    using BookSwap.Data.Models.Common;
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
     public class SwapRequestOwnerViewModel
     {
@@ -12,6 +9,6 @@
         public string BookTitle { get; set; }= null!;
         public string ApplicantUsername { get; set; } = null!;
         public DateTime CreatedOn { get; set; }
-        public string Status { get; set; } = null!;
+        public StatusType Status { get; set; }
     }
 }

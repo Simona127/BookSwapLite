@@ -14,28 +14,29 @@
             this.swapRequestService = swapRequestService;
         }
         [HttpPost]
-        public async Task<IActionResult> CreateRequest(int bookId)
+        public async Task<IActionResult> Create(int bookId)
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             await swapRequestService.CreateRequestAsync(bookId, userId);
-            return RedirectToAction("Index", "Book");
-        }
-        [HttpPost]
-        public async Task<IActionResult> Approve(int requestId)
-        {
-            await swapRequestService.ApproveAsync(requestId);
 
             return RedirectToAction("Index", "Book");
         }
         [HttpPost]
-        public async Task<IActionResult> Reject(int requestId)
+        public async Task<IActionResult> Approve(int id)
         {
-            await swapRequestService.RejectAsync(requestId);
+            await swapRequestService.ApproveAsync(id);
 
-            return RedirectToAction("Index", "Book");
+            return RedirectToAction(nameof(MyRequests));
         }
-        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> Reject(int id)
+        {
+            await swapRequestService.RejectAsync(id);
+
+            return RedirectToAction(nameof(MyRequests));
+        }
+        [HttpGet]
         public async Task<IActionResult> MyRequests()
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
