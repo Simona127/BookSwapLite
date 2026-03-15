@@ -13,10 +13,10 @@
 
         Task<BookDetailsViewModel> GetDetailsAsync(int id);
 
-        Task<BookFormModel> GetForEditAsync(int id); 
+        Task<BookFormModel> GetForEditAsync(int id, string userId); 
 
-        Task UpdateAsync(int id, BookFormModel model);
+        Task UpdateAsync(int id, BookFormModel model, string userId);
 
-        Task DeleteAsync(int id);
+        Task DeleteAsync(int id, string userId);
     }
 }

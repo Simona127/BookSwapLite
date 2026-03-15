@@ -57,7 +57,7 @@
 
             if (book == null)
             {
-                throw new ArgumentException("Book not found.");
+                return null;
             }
 
             return new BookDetailsViewModel
@@ -70,13 +70,17 @@
                 Condition = book.Condition
             };
         }
-        public async Task<BookFormModel> GetForEditAsync(int id)
+        public async Task<BookFormModel> GetForEditAsync(int id, string userId)
         {
             var book = await context.Books
                 .FirstOrDefaultAsync(b => b.Id == id);
             if (book == null)
             {
-                throw new ArgumentException("Book not found.");
+                return null;
+            }
+            if (book.OwnerId != userId)
+            {
+                return null;
             }
             return new BookFormModel
             {
@@ -88,7 +92,7 @@
                 Condition = book.Condition
             };
         }
-        public async Task UpdateAsync(int id, BookFormModel model)
+        public async Task UpdateAsync(int id, BookFormModel model, string userId)
         {
             var book = await context.Books
                 .FirstOrDefaultAsync(b => b.Id == id);
@@ -96,6 +100,10 @@
             if (book == null)
             {
                 throw new ArgumentException("Book not found.");
+            }
+            if(book.OwnerId != userId)
+            {
+                throw new UnauthorizedAccessException("You are not authorized to edit this book.");
             }
 
             book.Title = model.Title;
@@ -106,7 +114,7 @@
 
             await context.SaveChangesAsync();
         }
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id, string userId)
         {
             var book = await context.Books
                 .FirstOrDefaultAsync(b => b.Id == id);
@@ -114,6 +122,10 @@
             if (book == null)
             {
                 throw new ArgumentException("Book not found.");
+            }
+            if (book.OwnerId != userId)
+            {
+                throw new UnauthorizedAccessException("You are not authorized to delete this book.");
             }
 
             context.Books.Remove(book);

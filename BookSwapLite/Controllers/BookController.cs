@@ -31,6 +31,7 @@
             return View(model);
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(BookFormModel model)
         {
             if (!ModelState.IsValid)
@@ -46,19 +47,29 @@
         public async Task<IActionResult> Details(int id)
         {
             var book = await bookService.GetDetailsAsync(id);
+            if (book == null)
+            {
+                return NotFound();
+            }
 
             return View(book);
         }
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var model = await bookService.GetForEditAsync(id);
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var model = await bookService.GetForEditAsync(id, userId);
+            if( model == null)
+            {
+                return Unauthorized();
+            }
 
             model.Genres = await bookService.GetGenresAsync();
 
             return View(model);
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, BookFormModel model)
         {
             if (!ModelState.IsValid)
@@ -67,14 +78,17 @@
 
                 return View(model);
             }
-            await bookService.UpdateAsync(id, model);
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            await bookService.UpdateAsync(id, model, userId);
 
             return RedirectToAction(nameof(Index));
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
-            await bookService.DeleteAsync(id);
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            await bookService.DeleteAsync(id, userId);
             return RedirectToAction(nameof(Index));
         }
     }
