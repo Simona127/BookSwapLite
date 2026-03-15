@@ -1,6 +1,4 @@
 ﻿@model IEnumerable<BookSwap.Web.ViewModels.SwapRequests.SwapRequestOwnerViewModel>
-
-@{
     ViewData["Title"] = "Swap Requests for My Books";
 }
 
@@ -48,8 +46,7 @@ else
                               asp-action="Approve"
                               method="post">
                             <input type="hidden" name="id" value="@req.Id" />
-                            <button type="submit"
-                                    class="btn btn-success btn-sm">
+                    <button type="submit" class="btn btn-success btn-sm">
                                 ✅ Approve
                             </button>
                         </form>
