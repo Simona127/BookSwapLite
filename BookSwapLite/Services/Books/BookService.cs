@@ -92,18 +92,18 @@
                 Condition = book.Condition
             };
         }
-        public async Task UpdateAsync(int id, BookFormModel model, string userId)
+        public async Task<bool> UpdateAsync(int id, BookFormModel model, string userId)
         {
             var book = await context.Books
                 .FirstOrDefaultAsync(b => b.Id == id);
 
             if (book == null)
             {
-                throw new ArgumentException("Book not found.");
+                return false;
             }
             if(book.OwnerId != userId)
             {
-                throw new UnauthorizedAccessException("You are not authorized to edit this book.");
+                return false;
             }
 
             book.Title = model.Title;
@@ -113,23 +113,25 @@
             book.Condition = model.Condition;
 
             await context.SaveChangesAsync();
+            return true;
         }
-        public async Task DeleteAsync(int id, string userId)
+        public async Task<bool> DeleteAsync(int id, string userId)
         {
             var book = await context.Books
                 .FirstOrDefaultAsync(b => b.Id == id);
 
             if (book == null)
             {
-                throw new ArgumentException("Book not found.");
+                return false;
             }
             if (book.OwnerId != userId)
             {
-                throw new UnauthorizedAccessException("You are not authorized to delete this book.");
+                return false;
             }
 
             context.Books.Remove(book);
             await context.SaveChangesAsync();
+            return true;
         }
     }
 }

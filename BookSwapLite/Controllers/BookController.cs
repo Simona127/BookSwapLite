@@ -61,7 +61,7 @@
             var model = await bookService.GetForEditAsync(id, userId);
             if( model == null)
             {
-                return Unauthorized();
+                return Forbid();
             }
 
             model.Genres = await bookService.GetGenresAsync();
@@ -79,7 +79,13 @@
                 return View(model);
             }
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            await bookService.UpdateAsync(id, model, userId);
+
+            bool success = await bookService.UpdateAsync(id, model, userId);
+
+            if (!success)
+            {
+                return NotFound();
+            }
 
             return RedirectToAction(nameof(Index));
         }
@@ -88,7 +94,11 @@
         public async Task<IActionResult> Delete(int id)
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            await bookService.DeleteAsync(id, userId);
+            bool success = await bookService.DeleteAsync(id, userId);
+            if (!success)
+            {
+                return NotFound();
+            }
             return RedirectToAction(nameof(Index));
         }
     }

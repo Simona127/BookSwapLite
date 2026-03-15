@@ -15,8 +15,8 @@
 
         Task<BookFormModel> GetForEditAsync(int id, string userId); 
 
-        Task UpdateAsync(int id, BookFormModel model, string userId);
+        Task<bool> UpdateAsync(int id, BookFormModel model, string userId);
 
-        Task DeleteAsync(int id, string userId);
+        Task<bool> DeleteAsync(int id, string userId);
     }
 }
