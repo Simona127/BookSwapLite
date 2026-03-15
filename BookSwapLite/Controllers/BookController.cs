@@ -42,6 +42,7 @@
 
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             await bookService.CreateAsync(model, userId);
+            TempData["SuccessMessage"] = "Book created successfully!";
             return RedirectToAction(nameof(Index));
         }
         public async Task<IActionResult> Details(int id)
@@ -86,7 +87,8 @@
             {
                 return NotFound();
             }
-
+            
+            TempData["SuccessMessage"] = "Book updated successfully!";
             return RedirectToAction(nameof(Index));
         }
         [HttpPost]
@@ -99,6 +101,7 @@
             {
                 return NotFound();
             }
+            TempData["SuccessMessage"] = "Book deleted successfully!";
             return RedirectToAction(nameof(Index));
         }
     }

@@ -20,7 +20,8 @@
                 {
                     Id = b.Id,
                     Title = b.Title,
-                    Author = b.Author
+                    Author = b.Author,
+                    OwnerId = b.OwnerId
                 })
                 .ToListAsync();
         }

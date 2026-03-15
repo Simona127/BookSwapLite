@@ -14,25 +14,56 @@
             this.swapRequestService = swapRequestService;
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(int bookId)
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            await swapRequestService.CreateRequestAsync(bookId, userId);
+            try
+            {
+                await swapRequestService.CreateRequestAsync(bookId, userId);
+                TempData["SuccessMessage"] = "Swap request sent successfully!";
+            }
+            catch (InvalidOperationException ex)
+            {
+                TempData["ErrorMessage"] = ex.Message;
+            }
 
             return RedirectToAction("Index", "Book");
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Approve(int id)
         {
-            await swapRequestService.ApproveAsync(id);
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
+            try
+            {
+                await swapRequestService.ApproveAsync(id, userId);
+                TempData["SuccessMessage"] = "Swap request approved.";
+
+            }
+            catch (InvalidOperationException ex)
+            {
+                TempData["ErrorMessage"] = ex.Message;
+            }
             return RedirectToAction(nameof(MyRequests));
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Reject(int id)
         {
-            await swapRequestService.RejectAsync(id);
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            try
+            {
+                await swapRequestService.RejectAsync(id, userId);
+                TempData["SuccessMessage"] = "Swap request rejected.";
+
+            }
+            catch (InvalidOperationException ex)
+            {
+                TempData["ErrorMessage"] = ex.Message;
+            }
 
             return RedirectToAction(nameof(MyRequests));
         }

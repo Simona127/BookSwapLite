@@ -45,29 +45,47 @@
             await context.SaveChangesAsync();
         }
 
-        public async Task ApproveAsync(int requestId)
+        public async Task ApproveAsync(int requestId, string userId)
         {
             var swapRequest = await context.SwapRequests
+                .Include(sr => sr.Book)
                 .FirstOrDefaultAsync(sr => sr.Id == requestId);
 
             if (swapRequest == null)
             {
                 throw new InvalidOperationException("Request not found.");
+            }
+            if(swapRequest.Book.OwnerId != userId)
+            {
+                throw new UnauthorizedAccessException("You are not allowed to approve this request.");
+            }
+            if(swapRequest.Status != StatusType.Pending)
+            {
+                throw new InvalidOperationException("Request already processed.");
             }
 
                 swapRequest.Status = StatusType.Approved;
                 await context.SaveChangesAsync();
         }
 
-        public async Task RejectAsync(int requestId)
+        public async Task RejectAsync(int requestId, string userId)
         {
             var swapRequest = await context.SwapRequests
+                .Include(sr => sr.Book)
                 .FirstOrDefaultAsync(sr => sr.Id == requestId);
 
             if (swapRequest == null)
             {
                 throw new InvalidOperationException("Request not found.");
             }
+            if(swapRequest.Book.OwnerId != userId)
+            {
+                throw new UnauthorizedAccessException("You are not allowed to reject this request.");
+            }
+            if(swapRequest.Status != StatusType.Pending)
+            {
+                throw new InvalidOperationException("Request already processed.");
+            }    
 
                 swapRequest.Status = StatusType.Rejected;
                 await context.SaveChangesAsync();
@@ -83,8 +101,8 @@
                     Id = sr.Id,
                     BookTitle = sr.Book.Title,
                     ApplicantUsername = sr.Applicant.UserName,
-                    CreatedOn = DateTime.UtcNow,
-                    Status = StatusType.Pending
+                    CreatedOn = sr.CreatedOn,
+                    Status = sr.Status
                 })
                 .ToListAsync();
         }
