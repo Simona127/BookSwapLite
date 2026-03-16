@@ -5,13 +5,13 @@ The idea of the application is simple: you can add books, browse what others hav
 This project was created as a practice application for the ASP.NET Fundamentals course at SoftUni.
 
 ## 🚀 Features
-User Registration and Login (ASP.NET Identity)
-Browse all available books
-Add, edit, and delete books (CRUD)
-Request a book swap from another user
-Approve or reject swap requests
-View your sent swap requests
-View swap requests for your own books
+ - User Registration and Login (ASP.NET Identity)
+ - Browse all available books
+ - Add, edit, and delete books (CRUD)
+ - Request a book swap from another user
+ - Approve or reject swap requests
+ - View your sent swap requests
+ - View swap requests for your own books
 
 ## 🛠️ Technologies Used
 ASP.NET Core MVC (.NET 8)
@@ -22,10 +22,15 @@ Bootstrap 5
 Razor Views + Layout + Partial Views
 Dependency Injection
 
+## 📋 Requirements
+- .NET 8 SDK
+- SQL Server / SQL Server Express
+- Visual Studio 2022 or newer
+
 ## 📂 Project Structure
-BookSwap.Data – Database models and EF Core configuration
-BookSwap.Services – Business logic and services
-BookSwap.Web – Controllers, Views, and UI
+ - **BookSwap.Data** – Database models and EF Core configuration
+ - **BookSwap.Services** – Business logic and services
+ - **BookSwap.Web** – Controllers, Views, and UI
 
 ## 🧩 Entity Models
 The project includes at least 3 main entities:
@@ -79,7 +84,7 @@ Add Book
 Swap Requests
 Requests for My Books
 
-## 📄Seed Data
+## 📄 Seed Data
 The app automatically adds several genres when the database is created, but books must be added manually through the UI.
 
 Here are some example books that can be used for testing:
@@ -119,11 +124,11 @@ Genre: Mystery
 Condition: Used - Good
 Description: Classic detective mysteries featuring Sherlock Holmes.
 
-##💻Testing Accounts
+## 💻 Testing Accounts
 The app uses ASP.NET Identity, so users can create their own accounts locally for testing.
 Example test user:
 - Username: testuser@example.com
 - Password: created locally during testing
 
-##👩‍💻 Author
+## 👩‍💻 Author
 Developed by Simona Grachka.
