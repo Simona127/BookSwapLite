@@ -99,7 +99,8 @@
             bool success = await bookService.DeleteAsync(id, userId);
             if (!success)
             {
-                return NotFound();
+                TempData["ErrorMessage"] = "You cannot delete this book because there are pending swap requests.";
+                return RedirectToAction(nameof(Index));
             }
             TempData["SuccessMessage"] = "Book deleted successfully!";
             return RedirectToAction(nameof(Index));

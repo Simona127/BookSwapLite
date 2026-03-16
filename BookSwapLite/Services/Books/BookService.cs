@@ -2,6 +2,7 @@
 {
     using BookSwap.Data;
     using BookSwap.Data.Models;
+    using BookSwap.Data.Models.Common;
     using BookSwap.Web.ViewModels.Books;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.EntityFrameworkCore;
@@ -126,6 +127,12 @@
                 return false;
             }
             if (book.OwnerId != userId)
+            {
+                return false;
+            }
+            bool hasrequests = await context.SwapRequests
+                .AnyAsync(sr => sr.BookId == id);
+            if (hasrequests)
             {
                 return false;
             }
