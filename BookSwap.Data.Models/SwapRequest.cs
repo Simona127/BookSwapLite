@@ -15,7 +15,7 @@
         [Required]
         [ForeignKey(nameof(Applicant))]
         public string ApplicantId { get; set; } = null!;
-        public virtual IdentityUser Applicant { get; set; } = null!;
+        public virtual ApplicationUser Applicant { get; set; } = null!;
 
         [Required]
         public StatusType Status { get; set; }= StatusType.Pending;

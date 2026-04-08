@@ -24,4 +24,8 @@
     <ProjectReference Include="..\BookSwap.Data.Models\BookSwap.Data.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>
