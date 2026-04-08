@@ -1,0 +1,17 @@
+﻿@model IEnumerable<BookSwap.Data.Models.Review>
+
+<h2>Reviews</h2>
+
+<p><strong>Average Rating:</strong> @ViewBag.AverageRating</p>
+
+<hr />
+
+@foreach (var review in Model)
+{
+    <div>
+        <p><strong>@review.Reviewer.UserName</strong></p>
+        <p>Rating: @review.Rating</p>
+        <p>@review.Comment</p>
+        <hr />
+    </div>
+}

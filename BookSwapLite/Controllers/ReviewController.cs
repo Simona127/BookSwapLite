@@ -25,5 +25,16 @@ namespace BookSwapLite.Controllers
             await reviewService.AddReviewAsync(reviewerId!, userId, rating, comment);
             return RedirectToAction("Profile", "User", new { id = userId });
         }
+        [AllowAnonymous]
+        public async Task<IActionResult> ForUser(string userId)
+        {
+            var reviews = await reviewService.GetReviewsForUserAsync(userId);
+            var averageRating = await reviewService.GetAverageRatingAsync(userId);
+
+            ViewBag.AverageRating = averageRating;
+            ViewBag.UserId = userId;
+
+            return View(reviews);
+        }
     }
 }

@@ -1,0 +1,29 @@
+﻿@model IEnumerable<BookSwap.Web.ViewModels.Books.BookIndexViewModel>
+
+<h2>@ViewBag.UserName</h2>
+
+<p>⭐ Average Rating: @ViewBag.Rating</p>
+
+<h3>User Books</h3>
+
+@if (!Model.Any())
+{
+    <p>No books yet.</p>
+}
+else
+{
+    <ul>
+        @foreach (var book in Model)
+        {
+            <li>
+                @book.Title by @book.Author
+            </li>
+        }
+    </ul>
+}
+
+<br />
+
+<a asp-controller="Review" asp-action="ForUser" asp-route-userId="@ViewBag.UserId">
+    View Reviews
+</a>
