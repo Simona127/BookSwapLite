@@ -1,0 +1,19 @@
+﻿@model IEnumerable<dynamic>
+
+<h2>My Favorite Books</h2>
+
+@if (!Model.Any())
+{
+    <p>No favorite books yet.</p>
+}
+else
+{
+    <ul>
+        @foreach (var book in Model)
+        {
+            <li>
+                @book.Title by @book.Author
+            </li>
+        }
+    </ul>
+}
