@@ -1,21 +1,25 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using BookSwap.Data;
+using BookSwap.Services.Books;
+using BookSwapLite.Services.Reviews;
+using BookSwapLite.Services.SwapRequests;
+
 namespace BookSwapLite
 {
-    using BookSwap.Data;
-    using BookSwap.Services.Books;
-    using BookSwapLite.Services.Reviews;
-    using BookSwapLite.Services.SwapRequests;
-    using Microsoft.AspNetCore.Identity;
-    using Microsoft.EntityFrameworkCore;
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
             string connectionString = builder.Configuration
-                .GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+                .GetConnectionString("DefaultConnection")
+                ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
+
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
             builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
@@ -23,36 +27,57 @@ namespace BookSwapLite
                 options.SignIn.RequireConfirmedAccount = false;
                 options.SignIn.RequireConfirmedEmail = false;
 
-
-                //Emails must be unique to prevent multiple accounts with the same email address
                 options.User.RequireUniqueEmail = true;
 
-                //Lockout settings  
                 options.Lockout.MaxFailedAccessAttempts = 5;
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
 
-                //Password settings
                 options.Password.RequireDigit = true;
                 options.Password.RequireLowercase = true;
                 options.Password.RequireUppercase = true;
                 options.Password.RequiredUniqueChars = 1;
                 options.Password.RequiredLength = 8;
-
             })
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            .AddRoles<IdentityRole>()
+            .AddEntityFrameworkStores<ApplicationDbContext>();
 
             builder.Services.AddScoped<IBookService, BookService>();
+            builder.Services.AddScoped<ISwapRequestService, SwapRequestService>();
+            builder.Services.AddScoped<IReviewService, ReviewService>();
 
             builder.Services.AddControllersWithViews();
 
-            builder.Services.AddScoped<ISwapRequestService, SwapRequestService>();
-
-            builder.Services.AddScoped<IBookService, BookService>();
-            builder.Services.AddScoped<IReviewService, ReviewService>();
-
             WebApplication app = builder.Build();
 
-            // Configure the HTTP request pipeline.
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+
+                var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+                var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
+                if (!await roleManager.RoleExistsAsync("Administrator"))
+                {
+                    await roleManager.CreateAsync(new IdentityRole("Administrator"));
+                }
+
+                string adminEmail = "admin@abv.bg";
+                string adminPassword = "Admin123!";
+
+                var adminUser = await userManager.FindByEmailAsync(adminEmail);
+
+                if (adminUser == null)
+                {
+                    adminUser = new ApplicationUser
+                    {
+                        UserName = adminEmail,
+                        Email = adminEmail
+                    };
+
+                    await userManager.CreateAsync(adminUser, adminPassword);
+                    await userManager.AddToRoleAsync(adminUser, "Administrator");
+                }
+            }
             if (app.Environment.IsDevelopment())
             {
                 app.UseMigrationsEndPoint();
@@ -60,7 +85,6 @@ namespace BookSwapLite
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
@@ -73,8 +97,13 @@ namespace BookSwapLite
             app.UseAuthorization();
 
             app.MapControllerRoute(
+                name: "areas",
+                pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
+            app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
+
             app.MapRazorPages();
 
             app.Run();

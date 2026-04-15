@@ -22,4 +22,10 @@
     <ProjectReference Include="..\BookSwap.Web.ViewModels\BookSwap.Web.ViewModels.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="Areas\Identity\Data\" />
+  </ItemGroup>
+
 </Project>
