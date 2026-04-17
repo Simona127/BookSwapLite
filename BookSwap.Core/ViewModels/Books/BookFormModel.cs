@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace BookSwap.Web.ViewModels.Books
+namespace BookSwap.Core.ViewModels.Books
 {
     public class BookFormModel
     {

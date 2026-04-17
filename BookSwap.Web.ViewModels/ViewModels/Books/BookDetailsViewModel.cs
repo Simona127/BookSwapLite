@@ -1,4 +1,4 @@
-﻿namespace BookSwap.Web.ViewModels.Books
+﻿namespace BookSwap.Web.ViewModels.ViewModels.Books
 {
     using System;
     using System.Collections.Generic;

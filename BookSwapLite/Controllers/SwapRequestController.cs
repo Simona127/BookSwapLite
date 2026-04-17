@@ -1,6 +1,6 @@
 ﻿namespace BookSwapLite.Controllers
 {
-    using BookSwapLite.Services.SwapRequests;
+    using BookSwap.Core.Contracts;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using System.Security.Claims;

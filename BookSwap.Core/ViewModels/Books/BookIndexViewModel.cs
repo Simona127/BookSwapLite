@@ -1,4 +1,4 @@
-﻿namespace BookSwap.Web.ViewModels.Books
+﻿namespace BookSwap.Core.ViewModels.Books
 {
     public class BookIndexViewModel
     {

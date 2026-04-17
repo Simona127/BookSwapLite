@@ -1,9 +1,10 @@
-﻿namespace BookSwapLite.Services.SwapRequests
+﻿namespace BookSwap.Core.Services
 {
+    using BookSwap.Core.Contracts;
+    using BookSwap.Core.ViewModels.SwapRequests;
     using BookSwap.Data;
     using BookSwap.Data.Models;
     using BookSwap.Data.Models.Common;
-    using BookSwap.Web.ViewModels.SwapRequests;
     using Microsoft.EntityFrameworkCore;
 
     public class SwapRequestService : ISwapRequestService

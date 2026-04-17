@@ -1,4 +1,4 @@
-﻿using BookSwapLite.Services.Reviews;
+﻿using BookSwap.Core.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;

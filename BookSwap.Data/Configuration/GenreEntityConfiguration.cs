@@ -3,6 +3,7 @@
     using Models;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
     public class GenreEntityConfiguration : IEntityTypeConfiguration<Genre>
     {
         public void Configure(EntityTypeBuilder<Genre> builder)

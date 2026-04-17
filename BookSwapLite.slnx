@@ -4,7 +4,7 @@
     <Project Path="BookSwap.Data/BookSwap.Data.csproj" />
   </Folder>
   <Folder Name="/Web/">
-    <Project Path="BookSwap.Web.ViewModels/BookSwap.Web.ViewModels.csproj" />
     <Project Path="BookSwapLite/BookSwapLite.csproj" />
   </Folder>
+  <Project Path="BookSwap.Core/BookSwap.Core.csproj" Id="2d00fa05-9255-4d7e-9ce5-f266866500a6" />
 </Solution>

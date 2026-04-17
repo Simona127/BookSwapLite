@@ -1,5 +1,5 @@
-﻿using BookSwap.Services.Books;
-using BookSwap.Web.ViewModels.Books;
+﻿using BookSwap.Core.Contracts;
+using BookSwap.Core.ViewModels.Books;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;

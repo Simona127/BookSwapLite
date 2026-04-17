@@ -1,10 +1,10 @@
 ﻿namespace BookSwapLite.Controllers
 {
-    using BookSwap.Services.Books;
-    using BookSwap.Web.ViewModels.Books;
     using Microsoft.AspNetCore.Mvc;
     using System.Security.Claims;
     using Microsoft.AspNetCore.Authorization;
+    using BookSwap.Core.Contracts;
+    using BookSwap.Core.ViewModels.Books;
 
     [Authorize]
     public class BookController : Controller

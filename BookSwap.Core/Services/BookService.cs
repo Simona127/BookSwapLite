@@ -1,11 +1,11 @@
-﻿namespace BookSwap.Services.Books
-{
-    using BookSwap.Data;
-    using BookSwap.Data.Models;
-    using BookSwap.Web.ViewModels.Books;
-    using Microsoft.AspNetCore.Mvc.Rendering;
-    using Microsoft.EntityFrameworkCore;
+﻿using BookSwap.Core.Contracts;
+using BookSwap.Core.ViewModels.Books;
+using BookSwap.Data;
+using BookSwap.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
+namespace BookSwap.Core.Services
+{
     public class BookService : IBookService
     {
         private readonly ApplicationDbContext context;

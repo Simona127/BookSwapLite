@@ -1,6 +1,6 @@
-﻿namespace BookSwapLite.Services.SwapRequests
+﻿namespace BookSwap.Core.Contracts
 {
-    using BookSwap.Web.ViewModels.SwapRequests;
+    using BookSwap.Core.ViewModels.SwapRequests;
 
     public interface ISwapRequestService
     {

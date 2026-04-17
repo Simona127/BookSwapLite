@@ -1,8 +1,9 @@
-﻿using BookSwap.Data;
+﻿using BookSwap.Core.Contracts;
+using BookSwap.Data;
 using BookSwap.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace BookSwapLite.Services.Reviews
+namespace BookSwap.Core.Services
 {
     public class ReviewService : IReviewService
     {

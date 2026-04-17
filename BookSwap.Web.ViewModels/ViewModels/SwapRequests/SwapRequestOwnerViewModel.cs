@@ -1,4 +1,4 @@
-﻿namespace BookSwap.Web.ViewModels.SwapRequests
+﻿namespace BookSwap.Web.ViewModels.ViewModels.SwapRequests
 {
     using BookSwap.Data.Models.Common;
     using System;

@@ -1,7 +1,6 @@
-﻿namespace BookSwap.Services.Books
+﻿namespace BookSwap.Core.Contracts
 {
-    using BookSwap.Web.ViewModels.Books;
-    using Microsoft.AspNetCore.Mvc.Rendering;
+    using BookSwap.Core.ViewModels.Books;
 
     public interface IBookService
     {

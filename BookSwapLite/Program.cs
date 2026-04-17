@@ -1,9 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using BookSwap.Data;
-using BookSwap.Services.Books;
-using BookSwapLite.Services.Reviews;
-using BookSwapLite.Services.SwapRequests;
+using BookSwap.Core.Services;
+using BookSwap.Core.Contracts;
 
 namespace BookSwapLite
 {
@@ -32,7 +31,7 @@ namespace BookSwapLite
 
             builder.Services.AddScoped<IBookService, BookService>();
             builder.Services.AddScoped<ISwapRequestService, SwapRequestService>();
-            builder.Services.AddScoped<IReviewService, ReviewService>();
+            builder.Services.AddScoped<IReviewService, BookSwap.Core.Services.ReviewService>();
 
             builder.Services.AddControllersWithViews();
 

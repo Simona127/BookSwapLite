@@ -1,6 +1,6 @@
 ﻿using BookSwap.Data.Models;
 
-namespace BookSwapLite.Services.Reviews
+namespace BookSwap.Core.Contracts
 {
     public interface IReviewService
     {

@@ -3,6 +3,7 @@
     using Models;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
     public class SwapRequestEntityConfiguration : IEntityTypeConfiguration<SwapRequest>
     {
         public void Configure(EntityTypeBuilder<SwapRequest> builder)

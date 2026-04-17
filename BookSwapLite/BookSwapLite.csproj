@@ -18,8 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BookSwap.Core\BookSwap.Core.csproj" />
     <ProjectReference Include="..\BookSwap.Data\BookSwap.Data.csproj" />
-    <ProjectReference Include="..\BookSwap.Web.ViewModels\BookSwap.Web.ViewModels.csproj" />
   </ItemGroup>
 
   <ItemGroup>
