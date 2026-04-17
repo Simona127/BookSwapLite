@@ -2,7 +2,6 @@
 {
     using BookSwap.Data;
     using BookSwap.Data.Models;
-    using BookSwap.Data.Models.Common;
     using BookSwap.Web.ViewModels.Books;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.EntityFrameworkCore;
@@ -10,10 +9,12 @@
     public class BookService : IBookService
     {
         private readonly ApplicationDbContext context;
+
         public BookService(ApplicationDbContext context)
         {
             this.context = context;
         }
+
         public async Task<IEnumerable<BookIndexViewModel>> GetAllBooksAsync()
         {
             return await context.Books
@@ -26,6 +27,7 @@
                 })
                 .ToListAsync();
         }
+
         public async Task<IEnumerable<SelectListItem>> GetGenresAsync()
         {
             return await context.Genres
@@ -36,6 +38,7 @@
                 })
                 .ToListAsync();
         }
+
         public async Task CreateAsync(BookFormModel model, string userId)
         {
             var book = new Book
@@ -51,7 +54,8 @@
             await context.Books.AddAsync(book);
             await context.SaveChangesAsync();
         }
-        public async Task<BookDetailsViewModel> GetDetailsAsync(int id)
+
+        public async Task<BookDetailsViewModel?> GetDetailsAsync(int id)
         {
             var book = await context.Books
                 .Include(b => b.Genre)
@@ -72,18 +76,34 @@
                 Condition = book.Condition
             };
         }
-        public async Task<BookFormModel> GetForEditAsync(int id, string userId)
+
+        private async Task<bool> IsAdminAsync(string userId)
+        {
+            return await context.UserRoles
+                .Join(context.Roles,
+                    ur => ur.RoleId,
+                    r => r.Id,
+                    (ur, r) => new { ur.UserId, r.Name })
+                .AnyAsync(x => x.UserId == userId && x.Name == "Administrator");
+        }
+
+        public async Task<BookFormModel?> GetForEditAsync(int id, string userId)
         {
             var book = await context.Books
                 .FirstOrDefaultAsync(b => b.Id == id);
+
             if (book == null)
             {
                 return null;
             }
-            if (book.OwnerId != userId)
+
+            var isAdmin = await IsAdminAsync(userId);
+
+            if (book.OwnerId != userId && !isAdmin)
             {
                 return null;
             }
+
             return new BookFormModel
             {
                 Id = book.Id,
@@ -94,6 +114,7 @@
                 Condition = book.Condition
             };
         }
+
         public async Task<bool> UpdateAsync(int id, BookFormModel model, string userId)
         {
             var book = await context.Books
@@ -103,7 +124,10 @@
             {
                 return false;
             }
-            if(book.OwnerId != userId)
+
+            var isAdmin = await IsAdminAsync(userId);
+
+            if (book.OwnerId != userId && !isAdmin)
             {
                 return false;
             }
@@ -117,6 +141,7 @@
             await context.SaveChangesAsync();
             return true;
         }
+
         public async Task<bool> DeleteAsync(int id, string userId)
         {
             var book = await context.Books
@@ -126,19 +151,25 @@
             {
                 return false;
             }
-            if (book.OwnerId != userId)
+
+            var isAdmin = await IsAdminAsync(userId);
+
+            if (book.OwnerId != userId && !isAdmin)
             {
                 return false;
             }
-            bool hasrequests = await context.SwapRequests
+
+            bool hasRequests = await context.SwapRequests
                 .AnyAsync(sr => sr.BookId == id);
-            if (hasrequests)
+
+            if (hasRequests && !isAdmin)
             {
                 return false;
             }
 
             context.Books.Remove(book);
             await context.SaveChangesAsync();
+
             return true;
         }
     }

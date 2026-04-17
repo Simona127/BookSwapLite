@@ -1,0 +1,70 @@
+﻿@using BookSwap.Web.ViewModels.Books
+@model BookFormModel
+
+@{
+    ViewData["Title"] = "Edit Book";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-lg">
+        
+        <div class="card-header bg-warning text-dark">
+            <h3 class="mb-0">✏️ Edit Book</h3>
+        </div>
+
+        <div class="card-body">
+
+            <form asp-action="Edit" method="post">
+                @Html.AntiForgeryToken()
+
+                <input type="hidden" asp-for="Id" />
+
+                <div class="mb-3">
+                    <label asp-for="Title" class="form-label fw-bold"></label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Author" class="form-label fw-bold"></label>
+                    <input asp-for="Author" class="form-control" />
+                    <span asp-validation-for="Author" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="GenreId" class="form-label fw-bold"></label>
+                    <select asp-for="GenreId" asp-items="Model.Genres" class="form-select"></select>
+                    <span asp-validation-for="GenreId" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Condition" class="form-label fw-bold"></label>
+                    <input asp-for="Condition" class="form-control" />
+                    <span asp-validation-for="Condition" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label fw-bold"></label>
+                    <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-secondary">
+                        ⬅ Back
+                    </a>
+
+                    <button type="submit" class="btn btn-warning">
+                        💾 Save Changes
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

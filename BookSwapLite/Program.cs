@@ -11,11 +11,11 @@ namespace BookSwapLite
     {
         public static async Task Main(string[] args)
         {
-            WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+            var builder = WebApplication.CreateBuilder(args);
 
-            string connectionString = builder.Configuration
+            var connectionString = builder.Configuration
                 .GetConnectionString("DefaultConnection")
-                ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+                ?? throw new InvalidOperationException("Connection string not found.");
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
@@ -25,20 +25,9 @@ namespace BookSwapLite
             builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = false;
-                options.SignIn.RequireConfirmedEmail = false;
-
                 options.User.RequireUniqueEmail = true;
-
-                options.Lockout.MaxFailedAccessAttempts = 5;
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
-
-                options.Password.RequireDigit = true;
-                options.Password.RequireLowercase = true;
-                options.Password.RequireUppercase = true;
-                options.Password.RequiredUniqueChars = 1;
-                options.Password.RequiredLength = 8;
             })
-            .AddRoles<IdentityRole>()
+            .AddRoles<IdentityRole>() 
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
             builder.Services.AddScoped<IBookService, BookService>();
@@ -47,7 +36,7 @@ namespace BookSwapLite
 
             builder.Services.AddControllersWithViews();
 
-            WebApplication app = builder.Build();
+            var app = builder.Build();
 
             using (var scope = app.Services.CreateScope())
             {
@@ -75,9 +64,14 @@ namespace BookSwapLite
                     };
 
                     await userManager.CreateAsync(adminUser, adminPassword);
+                }
+
+                if (!await userManager.IsInRoleAsync(adminUser, "Administrator"))
+                {
                     await userManager.AddToRoleAsync(adminUser, "Administrator");
                 }
             }
+
             if (app.Environment.IsDevelopment())
             {
                 app.UseMigrationsEndPoint();
