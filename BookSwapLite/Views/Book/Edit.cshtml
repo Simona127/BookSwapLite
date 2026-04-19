@@ -1,4 +1,4 @@
-﻿@model BookSwap.Web.ViewModels.Books.BookFormModel
+﻿@model BookSwap.Core.ViewModels.Books.BookFormModel
 
 @{
     ViewData["Title"] = "Edit Book";
@@ -10,34 +10,32 @@
 
         <form asp-action="Edit" method="post">
 
-            <!-- Title -->
+            <input type="hidden" asp-for="Id" />
+
             <div class="mb-3">
                 <label asp-for="Title" class="form-label fw-bold"></label>
                 <input asp-for="Title" class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
 
-            <!-- Author -->
             <div class="mb-3">
                 <label asp-for="Author" class="form-label fw-bold"></label>
                 <input asp-for="Author" class="form-control" />
                 <span asp-validation-for="Author" class="text-danger"></span>
             </div>
 
-            <!-- Genre Dropdown ✅ -->
             <div class="mb-3">
                 <label asp-for="GenreId" class="form-label fw-bold"></label>
 
                 <select asp-for="GenreId"
-                        asp-items="Model.Genres"
+                        asp-items="@(new SelectList(Model.Genres, "Id", "Name"))"
                         class="form-select">
-                    <option value="">-- Select Genre --</option>
+                    <option value="0">-- Select Genre --</option>
                 </select>
 
                 <span asp-validation-for="GenreId" class="text-danger"></span>
             </div>
 
-            <!-- Description -->
             <div class="mb-3">
                 <label asp-for="Description" class="form-label fw-bold"></label>
                 <textarea asp-for="Description"
@@ -45,13 +43,11 @@
                           rows="3"></textarea>
             </div>
 
-            <!-- Condition -->
             <div class="mb-3">
                 <label asp-for="Condition" class="form-label fw-bold"></label>
                 <input asp-for="Condition" class="form-control" />
             </div>
 
-            <!-- Buttons -->
             <div class="d-flex gap-2">
                 <button type="submit" class="btn btn-success">
                     💾 Save Changes

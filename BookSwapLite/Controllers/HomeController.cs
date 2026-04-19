@@ -1,6 +1,6 @@
 namespace BookSwapLite.Web.Controllers
 {
-    using BookSwapLite.Web.ViewModels;
+    using BookSwapLite.Models;
     using Microsoft.AspNetCore.Mvc;
     using System.Diagnostics;
     public class HomeController : Controller

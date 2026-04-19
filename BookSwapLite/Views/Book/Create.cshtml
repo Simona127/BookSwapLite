@@ -1,23 +1,22 @@
 ﻿@using BookSwap.Core.ViewModels.Books
+@using Microsoft.AspNetCore.Mvc.Rendering
+
 @model BookFormModel
 
 @{
-    ViewData["Title"] = "Edit Book";
+    ViewData["Title"] = "Add New Book";
 }
 
 <div class="container mt-5">
     <div class="card shadow-lg">
         
-        <div class="card-header bg-warning text-dark">
-            <h3 class="mb-0">✏️ Edit Book</h3>
+        <div class="card-header bg-success text-white">
+            <h3 class="mb-0">📚 Add New Book</h3>
         </div>
 
         <div class="card-body">
 
-            <form asp-action="Edit" method="post">
-                @Html.AntiForgeryToken()
-
-                <input type="hidden" asp-for="Id" />
+            <form asp-action="Create" method="post">
 
                 <div class="mb-3">
                     <label asp-for="Title" class="form-label fw-bold"></label>
@@ -33,35 +32,36 @@
 
                 <div class="mb-3">
                     <label asp-for="GenreId" class="form-label fw-bold"></label>
-                    @using Microsoft.AspNetCore.Mvc.Rendering
 
-<select asp-for="GenreId"
+                    <select asp-for="GenreId"
                             asp-items="@(new SelectList(Model.Genres, "Id", "Name"))"
                             class="form-select">
+                        <option value="0">-- Select Genre --</option>
                     </select>
+
                     <span asp-validation-for="GenreId" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label fw-bold"></label>
+                    <textarea asp-for="Description"
+                              class="form-control"
+                              rows="3"></textarea>
                 </div>
 
                 <div class="mb-3">
                     <label asp-for="Condition" class="form-label fw-bold"></label>
                     <input asp-for="Condition" class="form-control" />
-                    <span asp-validation-for="Condition" class="text-danger"></span>
                 </div>
 
-                <div class="mb-3">
-                    <label asp-for="Description" class="form-label fw-bold"></label>
-                    <textarea asp-for="Description" class="form-control" rows="4"></textarea>
-                    <span asp-validation-for="Description" class="text-danger"></span>
-                </div>
-
-                <div class="d-flex justify-content-between">
-                    <a asp-action="Index" class="btn btn-secondary">
-                        ⬅ Back
-                    </a>
-
-                    <button type="submit" class="btn btn-warning">
-                        💾 Save Changes
+                <div class="d-flex gap-2 mt-3">
+                    <button type="submit" class="btn btn-success">
+                        ➕ Create
                     </button>
+
+                    <a asp-action="Index" class="btn btn-secondary">
+                        Cancel
+                    </a>
                 </div>
 
             </form>

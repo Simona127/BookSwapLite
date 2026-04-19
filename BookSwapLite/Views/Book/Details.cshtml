@@ -1,4 +1,5 @@
-﻿@model BookSwap.Web.ViewModels.Books.BookDetailsViewModel
+﻿@using BookSwap.Core.ViewModels.Books
+@model BookDetailsViewModel
 
 @{
     ViewData["Title"] = "Book Details";
@@ -25,7 +26,6 @@
                 ✏️ Edit
             </a>
 
-            <!-- FAVORITE -->
             <form asp-controller="Favorite" asp-action="Add" method="post">
                 @Html.AntiForgeryToken()
                 <input type="hidden" name="bookId" value="@Model.Id" />
@@ -34,7 +34,6 @@
                 </button>
             </form>
 
-            <!-- SWAP REQUEST -->
             <form asp-controller="SwapRequest" asp-action="Create" method="post">
                 @Html.AntiForgeryToken()
                 <input type="hidden" name="bookId" value="@Model.Id" />

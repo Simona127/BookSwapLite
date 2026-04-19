@@ -1,4 +1,5 @@
 ﻿using BookSwap.Core.Contracts;
+using BookSwap.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,5 +1,5 @@
 ﻿@using BookSwap.Core.ViewModels.Books
-@using BookSwap.Web.ViewModels.ViewModels.Books
+@using Microsoft.AspNetCore.Mvc.Rendering
 
 @model BookFormModel
 @{
@@ -18,7 +18,6 @@
 
                 <form asp-action="Create" method="post">
 
-                    <!-- Title -->
                     <div class="mb-3">
                         <label asp-for="Title" class="form-label fw-bold"></label>
                         <input asp-for="Title"
@@ -27,7 +26,6 @@
                         <span asp-validation-for="Title" class="text-danger"></span>
                     </div>
 
-                    <!-- Author -->
                     <div class="mb-3">
                         <label asp-for="Author" class="form-label fw-bold"></label>
                         <input asp-for="Author"
@@ -36,13 +34,11 @@
                         <span asp-validation-for="Author" class="text-danger"></span>
                     </div>
 
-                    <!-- Genre -->
                     <div class="mb-3">
                         <label asp-for="GenreId" class="form-label fw-bold"></label>
 
-                        <!-- Dropdown -->
                         <select asp-for="GenreId"
-                                asp-items="Model.Genres"
+                                asp-items="@(new SelectList(Model.Genres, "Id", "Name"))"
                                 class="form-select">
                             <option value="">-- Select Genre --</option>
                         </select>
@@ -52,7 +48,6 @@
                         <span asp-validation-for="GenreId" class="text-danger"></span>
                     </div>
 
-                    <!-- Description -->
                     <div class="mb-3">
                         <label asp-for="Description" class="form-label fw-bold"></label>
                         <textarea asp-for="Description"
@@ -62,7 +57,6 @@
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
 
-                    <!-- Condition -->
                     <div class="mb-4">
                         <label asp-for="Condition" class="form-label fw-bold"></label>
                         <input asp-for="Condition"
@@ -71,7 +65,6 @@
                         <span asp-validation-for="Condition" class="text-danger"></span>
                     </div>
 
-                    <!-- Buttons -->
                     <div class="d-flex justify-content-between">
 
                         <button type="submit"

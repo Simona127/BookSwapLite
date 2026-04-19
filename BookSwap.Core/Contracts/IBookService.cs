@@ -5,7 +5,7 @@
     public interface IBookService
     {
         Task<IEnumerable<BookIndexViewModel>> GetAllBooksAsync();
-        Task<IEnumerable<SelectListItem>> GetGenresAsync();
+        Task<IEnumerable<GenreViewModel>> GetGenresAsync();
         Task CreateAsync(BookFormModel model, string userId);
 
         Task<BookDetailsViewModel?> GetDetailsAsync(int id);

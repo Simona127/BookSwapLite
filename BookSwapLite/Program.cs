@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using BookSwap.Data;
 using BookSwap.Core.Services;
 using BookSwap.Core.Contracts;
+using BookSwap.Data.Models;
 
 namespace BookSwapLite
 {

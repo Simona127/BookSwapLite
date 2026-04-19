@@ -1,4 +1,4 @@
-﻿@model IEnumerable<BookSwap.Web.ViewModels.Books.BookIndexViewModel>
+﻿@model IEnumerable<BookSwap.Core.ViewModels.Books.BookIndexViewModel>
 @using System.Security.Claims
 
 @{
@@ -53,8 +53,8 @@ else
                         <div class="d-flex flex-wrap gap-2">
 
                             <a asp-action="Details"
-                               asp-route-id="@book.Id"
-                               class="btn btn-outline-primary btn-sm">
+                                   asp-route-id="@book.Id"
+                                   class="btn btn-outline-primary btn-sm">
                                 Details
                             </a>
 

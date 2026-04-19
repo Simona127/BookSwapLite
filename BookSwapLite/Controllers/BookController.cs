@@ -5,6 +5,7 @@
     using Microsoft.AspNetCore.Authorization;
     using BookSwap.Core.Contracts;
     using BookSwap.Core.ViewModels.Books;
+    using Microsoft.AspNetCore.Mvc.Rendering;
 
     [Authorize]
     public class BookController : Controller
@@ -26,7 +27,9 @@
         {
             var model = new BookFormModel();
 
-            model.Genres = await bookService.GetGenresAsync();
+            var genres = await bookService.GetGenresAsync();
+
+            model.Genres = genres;
 
             return View(model);
         }
@@ -36,7 +39,9 @@
         {
             if (!ModelState.IsValid)
             {
-                model.Genres = await bookService.GetGenresAsync();
+                var genres = await bookService.GetGenresAsync();
+
+                model.Genres = genres;
                 return View(model);
             }
 
@@ -65,7 +70,9 @@
                 return Forbid();
             }
 
-            model.Genres = await bookService.GetGenresAsync();
+            var genres = await bookService.GetGenresAsync();
+
+            model.Genres = genres;
 
             return View(model);
         }
@@ -75,7 +82,9 @@
         {
             if (!ModelState.IsValid)
             {
-                model.Genres = await bookService.GetGenresAsync();
+                var genres = await bookService.GetGenresAsync();
+
+                model.Genres = genres;
 
                 return View(model);
             }
@@ -95,13 +104,21 @@
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
+            if (id <= 0)
+            {
+                return BadRequest();
+            }
+
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
             bool success = await bookService.DeleteAsync(id, userId);
+
             if (!success)
             {
-                TempData["ErrorMessage"] = "You cannot delete this book because there are pending swap requests.";
+                TempData["ErrorMessage"] = "This book cannot be deleted because it has swap requests or you are not authorized.";
                 return RedirectToAction(nameof(Index));
             }
+
             TempData["SuccessMessage"] = "Book deleted successfully!";
             return RedirectToAction(nameof(Index));
         }

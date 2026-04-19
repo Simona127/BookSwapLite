@@ -1,11 +1,10 @@
-﻿using BookSwap.Core.Contracts;
-using BookSwap.Core.ViewModels.Books;
-using BookSwap.Data;
-using BookSwap.Data.Models;
-using Microsoft.EntityFrameworkCore;
-
-namespace BookSwap.Core.Services
+﻿namespace BookSwap.Core.Services
 {
+    using BookSwap.Core.Contracts;
+    using BookSwap.Core.ViewModels.Books;
+    using BookSwap.Data;
+    using BookSwap.Data.Models;
+    using Microsoft.EntityFrameworkCore;
     public class BookService : IBookService
     {
         private readonly ApplicationDbContext context;
@@ -28,19 +27,27 @@ namespace BookSwap.Core.Services
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<SelectListItem>> GetGenresAsync()
+        public async Task<IEnumerable<GenreViewModel>> GetGenresAsync()
         {
             return await context.Genres
-                .Select(g => new SelectListItem
+                .Select(g => new GenreViewModel
                 {
-                    Value = g.Id.ToString(),
-                    Text = g.GenreName
+                    Id = g.Id,
+                    Name = g.GenreName
                 })
                 .ToListAsync();
         }
 
         public async Task CreateAsync(BookFormModel model, string userId)
         {
+            bool genreExists = await context.Genres
+                .AnyAsync(g => g.Id == model.GenreId);
+
+            if (!genreExists)
+            {
+                return;
+            }
+
             var book = new Book
             {
                 Title = model.Title,
@@ -132,6 +139,14 @@ namespace BookSwap.Core.Services
                 return false;
             }
 
+            bool genreExists = await context.Genres
+                .AnyAsync(g => g.Id == model.GenreId);
+
+            if (!genreExists)
+            {
+                return false;
+            }
+
             book.Title = model.Title;
             book.Author = model.Author;
             book.GenreId = model.GenreId;
@@ -139,6 +154,7 @@ namespace BookSwap.Core.Services
             book.Condition = model.Condition;
 
             await context.SaveChangesAsync();
+
             return true;
         }
 
@@ -162,7 +178,7 @@ namespace BookSwap.Core.Services
             bool hasRequests = await context.SwapRequests
                 .AnyAsync(sr => sr.BookId == id);
 
-            if (hasRequests && !isAdmin)
+            if (hasRequests)
             {
                 return false;
             }

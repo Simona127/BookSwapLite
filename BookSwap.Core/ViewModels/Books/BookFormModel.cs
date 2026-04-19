@@ -14,9 +14,9 @@ namespace BookSwap.Core.ViewModels.Books
         public string Author { get; set; } = null!;
 
         [Required]
+        [Range(1, int.MaxValue, ErrorMessage = "Please select a genre")]
         public int GenreId { get; set; }
-        public IEnumerable<SelectListItem> Genres { get; set; }
-        = new List<SelectListItem>();
+        public IEnumerable<GenreViewModel> Genres { get; set; } = new List<GenreViewModel>();
 
         [MaxLength(500)]
         public string? Description { get; set; }

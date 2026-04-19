@@ -1,4 +1,4 @@
-﻿@using BookSwap.Web.ViewModels.ViewModels.Books
+﻿@using BookSwap.Core.ViewModels.Books
 @model IEnumerable<BookIndexViewModel>
 
 @{
@@ -9,6 +9,13 @@
 {
     <div class="alert alert-success alert-dismissible fade show text-center mt-3" role="alert">
         @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show text-center mt-3" role="alert">
+        @TempData["ErrorMessage"]
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
 }
@@ -28,7 +35,6 @@
 
                         <div class="mt-auto d-grid gap-2">
 
-                            <!-- DETAILS -->
                             <a asp-area="Admin"
                                    asp-controller="AdminBook"
                                    asp-action="Details"
@@ -37,7 +43,6 @@
                                 🔍 Details
                             </a>
 
-                            <!-- EDIT -->
                             <a asp-area="Admin"
                                    asp-controller="AdminBook"
                                    asp-action="Edit"
@@ -46,7 +51,6 @@
                                 ✏ Edit
                             </a>
 
-                            <!-- DELETE -->
                             <form asp-area="Admin"
                                   asp-controller="AdminBook"
                                   asp-action="DeleteConfirmed"
