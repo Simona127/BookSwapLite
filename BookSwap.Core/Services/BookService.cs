@@ -118,7 +118,8 @@
                 Author = book.Author,
                 GenreId = book.GenreId,
                 Description = book.Description,
-                Condition = book.Condition
+                Condition = book.Condition,
+                Genres = await GetGenresAsync()
             };
         }
 
@@ -187,6 +188,20 @@
             await context.SaveChangesAsync();
 
             return true;
+        }
+        public async Task<int> GetBooksCountAsync()
+        {
+            return await context.Books.CountAsync();
+        }
+
+        public async Task<int> GetUsersCountAsync()
+        {
+            return await context.Users.CountAsync();
+        }
+
+        public async Task<int> GetRequestsCountAsync()
+        {
+            return await context.SwapRequests.CountAsync();
         }
     }
 }

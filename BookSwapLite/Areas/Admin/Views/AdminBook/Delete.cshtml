@@ -3,33 +3,53 @@
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Edit Book";
 }
 
-<div class="container mt-5 text-center">
-    <div class="card shadow border-0 p-4">
+<div class="container mt-4">
 
-        <h2 class="text-danger mb-3">⚠ Delete Book</h2>
-
-        <div class="alert alert-danger">
-            Are you sure you want to delete this book?
-        </div>
-
-        <h4 class="fw-bold">@Model.Title</h4>
-        <p class="text-muted">@Model.Description</p>
-
-        <form asp-action="DeleteConfirmed" asp-route-id="@Model.Id" method="post">
-            @Html.AntiForgeryToken()
-
-            <div class="d-flex justify-content-center gap-3 mt-4">
-                <button type="submit" class="btn btn-danger px-4">
-                    Delete
-                </button>
-
-                <a asp-action="Index" class="btn btn-secondary px-4">
-                    Cancel
-                </a>
-            </div>
-        </form>
-
+    <div class="mb-4">
+        <h4 class="text-danger">⚠ Delete Book</h4>
+        <p class="text-muted mb-0">This action cannot be undone.</p>
     </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+
+            <div class="alert alert-warning">
+                Are you sure you want to delete this book?
+            </div>
+
+            <h5 class="fw-bold mb-1">@Model.Title</h5>
+            <p class="text-muted mb-4">@Model.Description</p>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <p class="mb-1 text-muted small">Genre</p>
+                    <p class="fw-semibold">@Model.Genre</p>
+                </div>
+
+                <div class="col-md-6">
+                    <p class="mb-1 text-muted small">Condition</p>
+                    <p class="fw-semibold">@Model.Condition</p>
+                </div>
+            </div>
+
+            <form asp-action="DeleteConfirmed" asp-route-id="@Model.Id" method="post">
+                @Html.AntiForgeryToken()
+
+                <div class="d-flex gap-2 mt-4">
+                    <button type="submit" class="btn btn-danger">
+                        Delete
+                    </button>
+
+                    <a asp-action="Index" class="btn btn-outline-secondary">
+                        Cancel
+                    </a>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
 </div>

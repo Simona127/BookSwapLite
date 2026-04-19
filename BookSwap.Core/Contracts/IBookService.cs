@@ -13,5 +13,8 @@
 
         Task<bool> UpdateAsync(int id, BookFormModel model, string userId);
         Task<bool> DeleteAsync(int id, string userId);
+        Task<int> GetBooksCountAsync();
+        Task<int> GetUsersCountAsync();
+        Task<int> GetRequestsCountAsync();
     }
 }

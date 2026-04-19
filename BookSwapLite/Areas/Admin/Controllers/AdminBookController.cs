@@ -66,8 +66,14 @@ namespace BookSwapLite.Areas.Admin.Controllers
                 return Unauthorized();
             }
 
+            if (id != model.Id)
+            {
+                return BadRequest();
+            }
+
             if (!ModelState.IsValid)
             {
+                model.Genres = await bookService.GetGenresAsync();
                 return View(model);
             }
 
@@ -79,7 +85,6 @@ namespace BookSwapLite.Areas.Admin.Controllers
             }
 
             TempData["SuccessMessage"] = "Book updated successfully!";
-
             return RedirectToAction(nameof(Index));
         }
 
@@ -111,12 +116,11 @@ namespace BookSwapLite.Areas.Admin.Controllers
 
             if (!result)
             {
-                TempData["SuccessMessage"] = "Delete failed!";
+                TempData["ErrorMessage"] = "Delete failed!";
                 return RedirectToAction(nameof(Index));
             }
 
             TempData["SuccessMessage"] = "Book deleted successfully!";
-
             return RedirectToAction(nameof(Index));
         }
     }
