@@ -14,7 +14,8 @@
             this.context = context;
         }
 
-        public async Task<IEnumerable<BookIndexViewModel>> GetAllAsync(string? searchTerm)
+        public async Task<(IEnumerable<BookIndexViewModel> Books, int TotalCount)>
+    GetAllAsync(string? searchTerm, int page, int pageSize)
         {
             var query = context.Books
                 .Include(b => b.Genre)
@@ -27,7 +28,12 @@
                     b.Author.ToLower().Contains(searchTerm.ToLower()));
             }
 
-            return await query
+            int totalCount = await query.CountAsync();
+
+            var books = await query
+                .OrderByDescending(b => b.Id)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
                 .Select(b => new BookIndexViewModel
                 {
                     Id = b.Id,
@@ -37,6 +43,8 @@
                     OwnerId = b.OwnerId
                 })
                 .ToListAsync();
+
+            return (books, totalCount);
         }
 
         public async Task<IEnumerable<BookIndexViewModel>> GetAllBooksAsync()

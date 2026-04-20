@@ -17,13 +17,17 @@
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> Index(string? searchTerm)
+        public async Task<IActionResult> Index(string? searchTerm, int page = 1)
         {
-            var books = await bookService.GetAllAsync(searchTerm);
+            int pageSize = 6;
+
+            var result = await bookService.GetAllAsync(searchTerm, page, pageSize);
 
             ViewBag.SearchTerm = searchTerm;
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = (int)Math.Ceiling(result.TotalCount / (double)pageSize);
 
-            return View(books);
+            return View(result.Books);
         }
 
         [HttpGet]
