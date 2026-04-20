@@ -1,19 +1,39 @@
 ﻿@model IEnumerable<dynamic>
 
-<h2>My Favorite Books</h2>
+<h2 class="mb-4 fw-bold">My Favorite Books ❤️</h2>
 
 @if (!Model.Any())
 {
-    <p>No favorite books yet.</p>
+    <div class="alert alert-info text-center">
+        No favorite books yet.
+    </div>
 }
 else
 {
-    <ul>
+    <div class="row">
         @foreach (var book in Model)
         {
-            <li>
-                @book.Title by @book.Author
-            </li>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm border-0">
+
+                    <div class="card-body">
+                        <h5 class="card-title">@book.Title</h5>
+                        <p class="card-text text-muted mb-2">
+                            by @book.Author
+                        </p>
+                    </div>
+
+                    <div class="card-footer bg-white border-0">
+                        <a asp-controller="Book"
+                               asp-action="Details"
+                               asp-route-id="@book.Id"
+                               class="btn btn-outline-primary btn-sm w-100">
+                            View Details
+                        </a>
+                    </div>
+
+                </div>
+            </div>
         }
-    </ul>
+    </div>
 }

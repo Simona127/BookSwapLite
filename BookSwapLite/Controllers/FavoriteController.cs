@@ -1,12 +1,12 @@
-﻿using BookSwap.Data;
-using BookSwap.Data.Models;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
-using Microsoft.EntityFrameworkCore;
-
-namespace BookSwapLite.Controllers
+﻿namespace BookSwapLite.Controllers
 {
+    using BookSwap.Data;
+    using BookSwap.Data.Models;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
+    using System.Security.Claims;
+    using Microsoft.EntityFrameworkCore;
+
     [Authorize]
     public class FavoriteController : Controller
     {
@@ -16,6 +16,7 @@ namespace BookSwapLite.Controllers
         {
             this.context = context;
         }
+
         [HttpPost]
         public async Task<IActionResult> Add(int bookId)
         {
@@ -34,10 +35,17 @@ namespace BookSwapLite.Controllers
 
                 await context.Favorites.AddAsync(favorite);
                 await context.SaveChangesAsync();
+
+                TempData["SuccessMessage"] = "Book added to Favorites successfully.";
+            }
+            else
+            {
+                TempData["InfoMessage"] = "This book is already in your Favorites.";
             }
 
             return RedirectToAction("Index", "Book");
         }
+
         public async Task<IActionResult> MyFavorites()
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);

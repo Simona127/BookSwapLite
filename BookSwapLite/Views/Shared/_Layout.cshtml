@@ -52,6 +52,17 @@
                         {
                             <li class="nav-item">
                                 <a class="nav-link"
+                                       asp-controller="Favorite"
+                                       asp-action="MyFavorites">
+                                    Favorites
+                                </a>
+                            </li>
+                        }
+
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link"
                                        asp-area="Identity"
                                        asp-page="/Account/Manage/Index">
                                     My Profile
@@ -81,6 +92,21 @@
     </header>
 
     <main class="container mt-4">
+
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success text-center">
+                @TempData["SuccessMessage"]
+            </div>
+        }
+
+        @if (TempData["InfoMessage"] != null)
+        {
+            <div class="alert alert-info text-center">
+                @TempData["InfoMessage"]
+            </div>
+        }
+
         @RenderBody()
     </main>
 
