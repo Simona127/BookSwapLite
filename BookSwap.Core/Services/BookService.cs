@@ -14,6 +14,31 @@
             this.context = context;
         }
 
+        public async Task<IEnumerable<BookIndexViewModel>> GetAllAsync(string? searchTerm)
+        {
+            var query = context.Books
+                .Include(b => b.Genre)
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                query = query.Where(b =>
+                    b.Title.ToLower().Contains(searchTerm.ToLower()) ||
+                    b.Author.ToLower().Contains(searchTerm.ToLower()));
+            }
+
+            return await query
+                .Select(b => new BookIndexViewModel
+                {
+                    Id = b.Id,
+                    Title = b.Title,
+                    Author = b.Author,
+                    Genre = b.Genre.GenreName,
+                    OwnerId = b.OwnerId
+                })
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<BookIndexViewModel>> GetAllBooksAsync()
         {
             return await context.Books

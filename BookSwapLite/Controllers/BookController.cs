@@ -1,12 +1,12 @@
 ﻿namespace BookSwapLite.Controllers
 {
-    using Microsoft.AspNetCore.Mvc;
-    using System.Security.Claims;
-    using Microsoft.AspNetCore.Authorization;
     using BookSwap.Core.Contracts;
     using BookSwap.Core.ViewModels.Books;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
+    using System.Security.Claims;
 
-[Authorize]
+    [Authorize]
     public class BookController : Controller
     {
         private readonly IBookService bookService;
@@ -17,9 +17,12 @@
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? searchTerm)
         {
-            var books = await bookService.GetAllBooksAsync();
+            var books = await bookService.GetAllAsync(searchTerm);
+
+            ViewBag.SearchTerm = searchTerm;
+
             return View(books);
         }
 
@@ -56,6 +59,7 @@
             return RedirectToAction(nameof(Index));
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {
             var book = await bookService.GetDetailsAsync(id);

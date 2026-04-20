@@ -33,6 +33,7 @@
 
                         <li class="nav-item">
                             <a class="nav-link"
+                                   asp-area=""
                                    asp-controller="Book"
                                    asp-action="Index">
                                 Books
@@ -41,6 +42,7 @@
 
                         <li class="nav-item">
                             <a class="nav-link"
+                                   asp-area=""
                                    asp-controller="SwapRequest"
                                    asp-action="MyRequests">
                                 Swap Requests
@@ -51,6 +53,7 @@
                         {
                             <li class="nav-item">
                                 <a class="nav-link"
+                                       asp-area=""
                                        asp-controller="Favorite"
                                        asp-action="MyFavorites">
                                     Favorites
@@ -93,6 +96,13 @@
         {
             <div class="alert alert-success text-center mb-3">
                 @TempData["SuccessMessage"]
+            </div>
+        }
+
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger text-center mb-3">
+                @TempData["ErrorMessage"]
             </div>
         }
 
