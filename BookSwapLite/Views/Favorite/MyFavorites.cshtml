@@ -1,8 +1,9 @@
-﻿@model IEnumerable<FavoriteViewModel>
+﻿@using BookSwap.Core.ViewModels.Favorites
+@model IEnumerable<FavoriteViewModel>
 
 <h2 class="mb-4 fw-bold">My Favorite Books ❤️</h2>
 
-@if (Model == null || !Model.Any())
+@if (!Model.Any())
 {
     <div class="alert alert-info text-center">
         No favorite books yet.

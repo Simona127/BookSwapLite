@@ -1,16 +1,19 @@
-﻿@{
+﻿@model BookSwap.Core.ViewModels.Reviews.ReviewFormModel
+
+@{
     ViewData["Title"] = "Add Review";
 }
 
 <h2 class="mb-4 fw-bold">Add Review ⭐</h2>
 
 <form asp-action="Add" method="post">
+    @Html.AntiForgeryToken()
 
-    <input type="hidden" name="userId" value="@ViewBag.UserId" />
+    <input type="hidden" asp-for="UserId" />
 
     <div class="mb-3">
         <label class="form-label">Rating</label>
-        <select name="rating" class="form-select" required>
+        <select asp-for="Rating" class="form-select">
             <option value="">Select rating</option>
             <option value="1">1 - Very Bad</option>
             <option value="2">2 - Bad</option>
@@ -18,13 +21,16 @@
             <option value="4">4 - Good</option>
             <option value="5">5 - Excellent</option>
         </select>
+        <span asp-validation-for="Rating" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
         <label class="form-label">Comment</label>
-        <textarea name="comment" class="form-control" rows="3"></textarea>
+        <textarea asp-for="Comment" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="Comment" class="text-danger"></span>
     </div>
 
     <button class="btn btn-primary">Submit Review</button>
-
 </form>
+
+<partial name="_ValidationScriptsPartial" />

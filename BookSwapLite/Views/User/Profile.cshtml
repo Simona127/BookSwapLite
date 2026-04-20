@@ -1,17 +1,18 @@
-﻿@using BookSwap.Core.ViewModels.Books
-@model IEnumerable<BookIndexViewModel>
+﻿@using BookSwap.Core.ViewModels.Users
+@model UserProfileViewModel
 
-<h2>@ViewBag.UserName</h2>
+<h2 class="fw-bold">@Model.UserName</h2>
 
 <p>
     Average Rating:
     @{
-        double rating = ViewBag.Rating ?? 0;
+        double rating = Model.Rating;
         int fullStars = (int)Math.Floor(rating);
         bool halfStar = (rating - fullStars) >= 0.5;
         int emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
     }
 
+    ```
     @for (int i = 0; i < fullStars; i++)
     {
         <i class="bi bi-star-fill text-warning"></i>
@@ -28,41 +29,58 @@
     }
 
     <span class="ms-2 text-muted">(@rating.ToString("0.0"))</span>
+    ```
+
 </p>
 
 <div class="mb-3">
-    @if (User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value != ViewBag.UserId)
+    @if (User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value != Model.UserId)
     {
         <a asp-controller="Review"
                asp-action="Add"
-               asp-route-userId="@ViewBag.UserId"
+               asp-route-userId="@Model.UserId"
                class="btn btn-outline-primary btn-sm me-2">
             Add Review
         </a>
     }
 
+    ```
     <a asp-controller="Review"
            asp-action="ForUser"
-           asp-route-userId="@ViewBag.UserId"
+           asp-route-userId="@Model.UserId"
            class="btn btn-outline-secondary btn-sm">
         View Reviews
     </a>
+    ```
+
 </div>
 
-<h3>User Books</h3>
+<h3 class="mt-4">📚 User Books</h3>
 
-@if (!Model.Any())
+@if (!Model.Books.Any())
 {
-    <p>No books yet.</p>
+    <div class="alert alert-info">
+        No books yet.
+    </div>
 }
 else
 {
-    <ul>
-        @foreach (var book in Model)
+
+    <div class="row row-cols-1 row-cols-md-3 g-4 mt-2">
+        @foreach (var book in Model.Books)
         {
-            <li>
-                @book.Title by @book.Author
-            </li>
-        }
-    </ul>
+            <div class="col">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body"> <h5 class="card-title fw-bold">@book.Title</h5> <p class="text-muted">✍️ @book.Author</p> </div> <div class="card-footer bg-white border-0">
+                    <a asp-controller="Book"
+                           asp-action="Details"
+                           asp-route-id="@book.Id"
+                           class="btn btn-outline-primary btn-sm">
+                        Details
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
 }

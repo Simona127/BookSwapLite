@@ -6,8 +6,9 @@
     using Microsoft.AspNetCore.Mvc;
     using System.Security.Claims;
     using Microsoft.EntityFrameworkCore;
+    using BookSwap.Core.ViewModels.Favorites;
 
-    [Authorize]
+[Authorize]
     public class FavoriteController : Controller
     {
         private readonly ApplicationDbContext context;
@@ -18,9 +19,21 @@
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(int bookId)
         {
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
+            bool bookExists = await context.Books.AnyAsync(b => b.Id == bookId);
+            if (!bookExists)
+            {
+                return NotFound();
+            }
 
             bool exists = await context.Favorites
                 .AnyAsync(f => f.BookId == bookId && f.UserId == userId);
@@ -46,18 +59,50 @@
             return RedirectToAction("Index", "Book");
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Remove(int bookId)
+        {
+            string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
+            var favorite = await context.Favorites
+                .FirstOrDefaultAsync(f => f.BookId == bookId && f.UserId == userId);
+
+            if (favorite == null)
+            {
+                return NotFound();
+            }
+
+            context.Favorites.Remove(favorite);
+            await context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Removed from Favorites.";
+
+            return RedirectToAction(nameof(MyFavorites));
+        }
+
         public async Task<IActionResult> MyFavorites()
         {
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
 
             var favorites = await context.Favorites
                 .Include(f => f.Book)
                 .Where(f => f.UserId == userId)
-                .Select(f => new
+                .Select(f => new FavoriteViewModel
                 {
-                    f.Book.Id,
-                    f.Book.Title,
-                    f.Book.Author
+                    Id = f.Book.Id,
+                    Title = f.Book.Title,
+                    Author = f.Book.Author
                 })
                 .ToListAsync();
 

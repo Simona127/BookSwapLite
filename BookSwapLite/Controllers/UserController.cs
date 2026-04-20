@@ -1,41 +1,58 @@
-﻿using BookSwap.Core.Contracts;
-using BookSwap.Data.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-
-public class UserController : Controller
+﻿namespace BookSwapLite.Controllers
 {
-    private readonly UserManager<ApplicationUser> userManager;
-    private readonly IBookService bookService;
-    private readonly IReviewService reviewService;
+    using BookSwap.Core.Contracts;
+    using BookSwap.Core.ViewModels.Users;
+    using BookSwap.Data.Models;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
+
+    [Authorize]
+    public class UserController : Controller
+    {
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly IBookService bookService;
+        private readonly IReviewService reviewService;
 
     public UserController(
         UserManager<ApplicationUser> userManager,
         IBookService bookService,
         IReviewService reviewService)
-    {
-        this.userManager = userManager;
-        this.bookService = bookService;
-        this.reviewService = reviewService;
-    }
-
-    public async Task<IActionResult> Profile(string id)
-    {
-        var user = await userManager.FindByIdAsync(id);
-        if (user == null)
         {
-            return NotFound();
+            this.userManager = userManager;
+            this.bookService = bookService;
+            this.reviewService = reviewService;
         }
 
-        var books = await bookService.GetAllBooksAsync();
-        var userBooks = books.Where(b => b.OwnerId == id);
+        [AllowAnonymous] 
+        public async Task<IActionResult> Profile(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest();
+            }
 
-        var rating = await reviewService.GetAverageRatingAsync(id);
+            var user = await userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
 
-        ViewBag.UserName = user.UserName;
-        ViewBag.Rating = rating;
-        ViewBag.UserId = id;
+            var userBooks = (await bookService.GetAllBooksAsync())
+                .Where(b => b.OwnerId == id)
+                .ToList();
 
-        return View(userBooks);
+            var rating = await reviewService.GetAverageRatingAsync(id);
+
+            var model = new UserProfileViewModel
+            {
+                UserId = id,
+                UserName = user.UserName!,
+                Rating = rating,
+                Books = userBooks
+            };
+
+            return View(model);
+        }
     }
 }

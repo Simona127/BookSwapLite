@@ -9,7 +9,8 @@
 
 <div class="container mt-5">
     <div class="card shadow-lg">
-        
+
+        ```
         <div class="card-header bg-success text-white">
             <h3 class="mb-0">📚 Add New Book</h3>
         </div>
@@ -18,15 +19,19 @@
 
             <form asp-action="Create" method="post">
 
+                @Html.AntiForgeryToken()
+
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
                 <div class="mb-3">
                     <label asp-for="Title" class="form-label fw-bold"></label>
-                    <input asp-for="Title" class="form-control" />
+                    <input asp-for="Title" class="form-control" placeholder="Enter book title..." />
                     <span asp-validation-for="Title" class="text-danger"></span>
                 </div>
 
                 <div class="mb-3">
                     <label asp-for="Author" class="form-label fw-bold"></label>
-                    <input asp-for="Author" class="form-control" />
+                    <input asp-for="Author" class="form-control" placeholder="Enter author name..." />
                     <span asp-validation-for="Author" class="text-danger"></span>
                 </div>
 
@@ -46,12 +51,15 @@
                     <label asp-for="Description" class="form-label fw-bold"></label>
                     <textarea asp-for="Description"
                               class="form-control"
-                              rows="3"></textarea>
+                              rows="3"
+                              placeholder="Optional description..."></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
                 </div>
 
                 <div class="mb-3">
                     <label asp-for="Condition" class="form-label fw-bold"></label>
-                    <input asp-for="Condition" class="form-control" />
+                    <input asp-for="Condition" class="form-control" placeholder="New / Good / Used" />
+                    <span asp-validation-for="Condition" class="text-danger"></span>
                 </div>
 
                 <div class="d-flex gap-2 mt-3">
@@ -68,6 +76,8 @@
 
         </div>
     </div>
+    ```
+
 </div>
 
 @section Scripts {

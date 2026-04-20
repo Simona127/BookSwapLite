@@ -5,19 +5,31 @@
     using Microsoft.AspNetCore.Mvc;
     using System.Security.Claims;
 
-    [Authorize]
+[Authorize]
     public class SwapRequestController : Controller
     {
         private readonly ISwapRequestService swapRequestService;
+
         public SwapRequestController(ISwapRequestService swapRequestService)
         {
             this.swapRequestService = swapRequestService;
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(int bookId)
         {
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (bookId <= 0)
+            {
+                return BadRequest();
+            }
+
+            string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 await swapRequestService.CreateRequestAsync(bookId, userId);
@@ -30,35 +42,54 @@
 
             return RedirectToAction("Index", "Book");
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Approve(int id)
         {
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (id <= 0)
+            {
+                return BadRequest();
+            }
+
+            string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
 
             try
             {
                 await swapRequestService.ApproveAsync(id, userId);
                 TempData["SuccessMessage"] = "Swap request approved.";
-
             }
             catch (InvalidOperationException ex)
             {
                 TempData["ErrorMessage"] = ex.Message;
             }
+
             return RedirectToAction(nameof(MyRequests));
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Reject(int id)
         {
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (id <= 0)
+            {
+                return BadRequest();
+            }
+
+            string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
 
             try
             {
                 await swapRequestService.RejectAsync(id, userId);
                 TempData["SuccessMessage"] = "Swap request rejected.";
-
             }
             catch (InvalidOperationException ex)
             {
@@ -67,10 +98,16 @@
 
             return RedirectToAction(nameof(MyRequests));
         }
+
         [HttpGet]
         public async Task<IActionResult> MyRequests()
         {
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
 
             var myRequests = await swapRequestService.GetRequestsForOwnerAsync(userId);
 

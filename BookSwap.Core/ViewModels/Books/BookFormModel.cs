@@ -18,11 +18,11 @@ namespace BookSwap.Core.ViewModels.Books
         public int GenreId { get; set; }
         public IEnumerable<GenreViewModel> Genres { get; set; } = new List<GenreViewModel>();
 
-        [MaxLength(500)]
+        [MaxLength(500, ErrorMessage = "Description cannot exceed 500 characters.")]
         public string? Description { get; set; }
 
         [Required]
-        [MaxLength(30)]
+        [StringLength(30)]
         public string Condition { get; set; } = null!;
     }
 }
