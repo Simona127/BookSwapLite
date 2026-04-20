@@ -7,4 +7,5 @@
     <Project Path="BookSwapLite/BookSwapLite.csproj" />
   </Folder>
   <Project Path="BookSwap.Core/BookSwap.Core.csproj" Id="2d00fa05-9255-4d7e-9ce5-f266866500a6" />
+  <Project Path="BookSwap.Tests/BookSwap.Tests.csproj" Id="645b84cd-686e-452e-974b-1ca28240c840" />
 </Solution>

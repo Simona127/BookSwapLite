@@ -7,13 +7,20 @@ namespace BookSwap.Core.Services
 {
     public class ReviewService : IReviewService
     {
-        private readonly ApplicationDbContext content;
-        public ReviewService(ApplicationDbContext content)
+        private readonly ApplicationDbContext context;
+
+        public ReviewService(ApplicationDbContext context)
         {
-            this.content = content;
+            this.context = context;
         }
+
         public async Task AddReviewAsync(string reviewerId, string reviewedUserId, int rating, string? comment)
         {
+            if (string.IsNullOrEmpty(reviewerId) || string.IsNullOrEmpty(reviewedUserId))
+            {
+                throw new ArgumentException("Invalid user data.");
+            }
+
             var review = new Review
             {
                 ReviewerId = reviewerId,
@@ -21,26 +28,29 @@ namespace BookSwap.Core.Services
                 Rating = rating,
                 Comment = comment
             };
-            await content.Reviews.AddAsync(review);
-            await content.SaveChangesAsync();
+
+            await context.Reviews.AddAsync(review);
+            await context.SaveChangesAsync();
         }
+
         public async Task<IEnumerable<Review>> GetReviewsForUserAsync(string userId)
         {
-            return await content.Reviews
+            return await context.Reviews
                 .Where(r => r.ReviewedUserId == userId)
-                .Include(r => r.Reviewer)
                 .ToListAsync();
         }
+
         public async Task<double> GetAverageRatingAsync(string userId)
         {
-            var reviews = await content.Reviews
+            var reviews = await context.Reviews
                 .Where(r => r.ReviewedUserId == userId)
                 .ToListAsync();
 
-            if (reviews.Count == 0)
+            if (!reviews.Any())
             {
                 return 0;
             }
+
             return reviews.Average(r => r.Rating);
         }
     }
