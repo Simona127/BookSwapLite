@@ -21,8 +21,12 @@ namespace BookSwapLite.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(string userId, int rating, string? comment)
         {
-            string reviewerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            await reviewService.AddReviewAsync(reviewerId!, userId, rating, comment);
+            string reviewerId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+
+            await reviewService.AddReviewAsync(reviewerId, userId, rating, comment);
+
+            TempData["SuccessMessage"] = "Review added successfully.";
+
             return RedirectToAction("Profile", "User", new { id = userId });
         }
         [AllowAnonymous]

@@ -1,17 +1,36 @@
-﻿@model IEnumerable<BookSwap.Data.Models.Review>
+﻿@model IEnumerable<dynamic>
 
-<h2>Reviews</h2>
+<h2 class="mb-4 fw-bold">User Reviews ⭐</h2>
 
-<p><strong>Average Rating:</strong> @ViewBag.AverageRating</p>
+<div class="mb-3">
+    <strong>Average Rating:</strong> @ViewBag.AverageRating ⭐
+</div>
 
-<hr />
-
-@foreach (var review in Model)
+@if (!Model.Any())
 {
-    <div>
-        <p><strong>@review.Reviewer.UserName</strong></p>
-        <p>Rating: @review.Rating</p>
-        <p>@review.Comment</p>
-        <hr />
+    <div class="alert alert-info text-center">
+        No reviews yet.
+    </div>
+}
+else
+{
+    <div class="row">
+        @foreach (var review in Model)
+        {
+            <div class="col-md-6 mb-3">
+                <div class="card shadow-sm border-0">
+
+                    <div class="card-body">
+                        <h5 class="mb-2">Rating: @review.Rating ⭐</h5>
+
+                        @if (!string.IsNullOrEmpty(review.Comment))
+                        {
+                            <p class="text-muted">@review.Comment</p>
+                        }
+                    </div>
+
+                </div>
+            </div>
+        }
     </div>
 }

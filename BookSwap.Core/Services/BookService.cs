@@ -80,7 +80,8 @@
                 Author = book.Author,
                 Genre = book.Genre.GenreName,
                 Description = book.Description,
-                Condition = book.Condition
+                Condition = book.Condition,
+                OwnerId = book.OwnerId
             };
         }
 

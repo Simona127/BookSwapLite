@@ -8,5 +8,6 @@
         public string Genre { get; set; }=null!;
         public string? Description { get; set; }
         public string Condition { get; set; } = null!;
+        public string OwnerId { get; set; } = null!;
     }
 }

@@ -1,8 +1,8 @@
-﻿@model IEnumerable<dynamic>
+﻿@model IEnumerable<FavoriteViewModel>
 
 <h2 class="mb-4 fw-bold">My Favorite Books ❤️</h2>
 
-@if (!Model.Any())
+@if (Model == null || !Model.Any())
 {
     <div class="alert alert-info text-center">
         No favorite books yet.

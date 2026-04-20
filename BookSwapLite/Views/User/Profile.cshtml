@@ -3,7 +3,51 @@
 
 <h2>@ViewBag.UserName</h2>
 
-<p>⭐ Average Rating: @ViewBag.Rating</p>
+<p>
+    Average Rating:
+    @{
+        double rating = ViewBag.Rating ?? 0;
+        int fullStars = (int)Math.Floor(rating);
+        bool halfStar = (rating - fullStars) >= 0.5;
+        int emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+    }
+
+    @for (int i = 0; i < fullStars; i++)
+    {
+        <i class="bi bi-star-fill text-warning"></i>
+    }
+
+    @if (halfStar)
+    {
+        <i class="bi bi-star-half text-warning"></i>
+    }
+
+    @for (int i = 0; i < emptyStars; i++)
+    {
+        <i class="bi bi-star text-warning"></i>
+    }
+
+    <span class="ms-2 text-muted">(@rating.ToString("0.0"))</span>
+</p>
+
+<div class="mb-3">
+    @if (User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value != ViewBag.UserId)
+    {
+        <a asp-controller="Review"
+               asp-action="Add"
+               asp-route-userId="@ViewBag.UserId"
+               class="btn btn-outline-primary btn-sm me-2">
+            Add Review
+        </a>
+    }
+
+    <a asp-controller="Review"
+           asp-action="ForUser"
+           asp-route-userId="@ViewBag.UserId"
+           class="btn btn-outline-secondary btn-sm">
+        View Reviews
+    </a>
+</div>
 
 <h3>User Books</h3>
 
@@ -22,9 +66,3 @@ else
         }
     </ul>
 }
-
-<br />
-
-<a asp-controller="Review" asp-action="ForUser" asp-route-userId="@ViewBag.UserId">
-    View Reviews
-</a>
