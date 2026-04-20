@@ -107,7 +107,6 @@
         {
             var context = GetDbContext();
 
-            // 🔥 трябва да има genre
             context.Genres.Add(new Genre { Id = 1, GenreName = "Test" });
 
             context.Books.Add(new Book
