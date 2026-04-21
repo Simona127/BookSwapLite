@@ -2,7 +2,15 @@
 
 **BookSwapLite** is a full-stack ASP.NET Core MVC web application for exchanging books between users through a structured swap request system.
 
-The platform allows users to list books, browse available listings, send swap requests, and interact through reviews and favorites. The application follows a clean layered architecture and demonstrates best practices in ASP.NET Core development.
+The application allows users to add books, browse listings, send swap requests, mark favorites, and leave reviews. It follows a clean layered architecture and demonstrates best practices in ASP.NET Core development.
+
+---
+
+## 🌐 Live Demo
+
+The application is deployed on Azure:
+
+https://bookswap-simona-2026-hqchdvd9hvdwgaft.westeurope-01.azurewebsites.net/
 
 ---
 
@@ -11,38 +19,40 @@ The platform allows users to list books, browse available listings, send swap re
 ### 🔐 Authentication & Authorization
 
 * User registration and login (ASP.NET Identity)
-* Role-based access (Admin area)
-* Protected routes and actions
+* Role-based authorization
+* Admin area with restricted access
 
 ### 📚 Books Management
 
 * Create, edit, delete books (CRUD)
 * View all books
-* Detailed book pages
+* Book details page
 
-### 🔄 Swap Requests System
+### 🔄 Swap Requests
 
-* Send swap requests to other users
-* Accept or reject requests
-* Track:
+* Send swap requests
+* Accept / reject requests
+* View:
 
   * Sent requests
-  * Received requests
+  * Requests for your books
 
 ### ⭐ Favorites
 
 * Add books to favorites
-* View personal favorite books list
+* View favorite books list
 
-### 📝 Reviews System
+### 📝 Reviews
 
 * Add reviews
 * View reviews for users
 
-### 🛠️ Admin Panel
+### ⚠️ Error Handling
 
-* Admin dashboard
-* Management capabilities
+* Custom error pages:
+
+  * 404 Not Found
+  * 500 Internal Server Error
 
 ---
 
@@ -77,13 +87,13 @@ The project follows a **layered architecture (Separation of Concerns)**:
 * **BookSwapLite (Web)**
 
   * Controllers
-  * Razor Views
+  * Views (Razor)
   * Areas (Admin, Identity)
-  * UI (Bootstrap)
+  * Static files (wwwroot)
 
 * **BookSwap.Tests**
 
-  * Unit tests
+  * Unit tests for services
 
 ---
 
@@ -91,8 +101,8 @@ The project follows a **layered architecture (Separation of Concerns)**:
 
 * Dependency Injection
 * Separation of Concerns
-* Service Layer Architecture
-* Use of ViewModels
+* Service Layer Pattern
+* ViewModels usage
 * Clean and maintainable code
 
 ---
@@ -112,7 +122,7 @@ The project follows a **layered architecture (Separation of Concerns)**:
 
 ## 🧪 Unit Testing
 
-Includes tests for:
+The project includes unit tests for:
 
 * BookService
 * ReviewService
@@ -139,24 +149,25 @@ appsettings.json
 Example:
 
 "ConnectionStrings": {
-  "DefaultConnection": "Server=localhost;Database=BookSwapLite;Trusted_Connection=True;TrustServerCertificate=True"
+  "DefaultConnection": "Server=localhost;Database=BookSwapLite;Trusted_Connection=True;TrustServerCertificate=True",
+  "ApplicationDbContextConnection": "Server=(localdb)\\mssqllocaldb;Database=BookSwapLite;Trusted_Connection=True;MultipleActiveResultSets=true"
 }
 
 ---
 
 ## ▶️ How to Run
 
-1. Clone repository:
+1. Clone the repository:
 
 git clone https://github.com/Simona127/BookSwapLite.git
 
 2. Open in Visual Studio
 3. Restore NuGet packages
-4. Run migrations:
+4. Apply migrations:
 
 Update-Database
 
-5. Start the project:
+5. Run the project:
 
 Ctrl + F5
 
@@ -164,28 +175,29 @@ Ctrl + F5
 
 ## 📌 Key Functionalities
 
-* Full CRUD for Books
+* Full CRUD operations
 * Swap request workflow
 * Favorites system
 * Reviews system
 * Admin area
-* Clean UI
+* Custom error handling
+* Unit testing
 
 ---
 
 ## 📄 Seed Data
 
 * Genres are seeded automatically
-* Books are added via UI
+* Books are added via the UI
 
 ---
 
 ## 📈 Future Improvements
 
-* Notifications
-* Chat system
+* Real-time notifications
+* Chat system (Message entity ready)
 * Pagination & filtering
-* Image uploads
+* Image upload for books
 * Cloud deployment (Azure)
 
 ---
@@ -198,12 +210,12 @@ Ctrl + F5
 
 ## 🏁 Project Purpose
 
-This project demonstrates practical skills in:
+This project demonstrates:
 
-* ASP.NET Core MVC
-* Entity Framework Core
+* ASP.NET Core MVC architecture
+* Entity Framework Core usage
 * Authentication & Authorization
-* Clean Architecture
-* Unit Testing
+* Clean architecture principles
+* Unit testing
 
 ---
