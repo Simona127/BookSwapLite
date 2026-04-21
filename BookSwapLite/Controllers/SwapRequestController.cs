@@ -5,7 +5,7 @@
     using Microsoft.AspNetCore.Mvc;
     using System.Security.Claims;
 
-[Authorize]
+    [Authorize]
     public class SwapRequestController : Controller
     {
         private readonly ISwapRequestService swapRequestService;
@@ -15,10 +15,18 @@
             this.swapRequestService = swapRequestService;
         }
 
+        private void ClearTempDataMessages()
+        {
+            TempData.Remove("SuccessMessage");
+            TempData.Remove("ErrorMessage");
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(int bookId)
         {
+            ClearTempDataMessages();
+
             if (bookId <= 0)
             {
                 return BadRequest();
@@ -47,6 +55,8 @@
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Approve(int id)
         {
+            ClearTempDataMessages();
+
             if (id <= 0)
             {
                 return BadRequest();
@@ -75,6 +85,8 @@
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Reject(int id)
         {
+            ClearTempDataMessages();
+
             if (id <= 0)
             {
                 return BadRequest();

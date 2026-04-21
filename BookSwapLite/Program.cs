@@ -27,7 +27,7 @@ namespace BookSwapLite
                 options.SignIn.RequireConfirmedAccount = false;
                 options.User.RequireUniqueEmail = true;
             })
-            .AddRoles<IdentityRole>() 
+            .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
             builder.Services.AddScoped<IBookService, BookService>();
@@ -78,7 +78,7 @@ namespace BookSwapLite
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Error/500");
                 app.UseHsts();
             }
 
@@ -86,6 +86,8 @@ namespace BookSwapLite
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseStatusCodePagesWithReExecute("/Error/{0}");
 
             app.UseAuthentication();
             app.UseAuthorization();
