@@ -1,12 +1,12 @@
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using BookSwap.Data;
-using BookSwap.Core.Services;
-using BookSwap.Core.Contracts;
-using BookSwap.Data.Models;
-
 namespace BookSwapLite
 {
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.EntityFrameworkCore;
+    using BookSwap.Data;
+    using BookSwap.Core.Services;
+    using BookSwap.Core.Contracts;
+    using BookSwap.Data.Models;
+
     public class Program
     {
         public static async Task Main(string[] args)
@@ -32,44 +32,63 @@ namespace BookSwapLite
 
             builder.Services.AddScoped<IBookService, BookService>();
             builder.Services.AddScoped<ISwapRequestService, SwapRequestService>();
-            builder.Services.AddScoped<IReviewService, BookSwap.Core.Services.ReviewService>();
+            builder.Services.AddScoped<IReviewService, ReviewService>();
 
             builder.Services.AddControllersWithViews();
 
             var app = builder.Build();
 
-            using (var scope = app.Services.CreateScope())
+            try
             {
-                var services = scope.ServiceProvider;
-
-                var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-                var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-
-                if (!await roleManager.RoleExistsAsync("Administrator"))
+                using (var scope = app.Services.CreateScope())
                 {
-                    await roleManager.CreateAsync(new IdentityRole("Administrator"));
-                }
+                    var services = scope.ServiceProvider;
 
-                string adminEmail = "admin@abv.bg";
-                string adminPassword = "Admin123!";
+                    var db = services.GetRequiredService<ApplicationDbContext>();
+                    await db.Database.MigrateAsync();
 
-                var adminUser = await userManager.FindByEmailAsync(adminEmail);
+                    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+                    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
-                if (adminUser == null)
-                {
-                    adminUser = new ApplicationUser
+                    if (!await roleManager.RoleExistsAsync("Administrator"))
                     {
-                        UserName = adminEmail,
-                        Email = adminEmail
-                    };
+                        await roleManager.CreateAsync(new IdentityRole("Administrator"));
+                    }
 
-                    await userManager.CreateAsync(adminUser, adminPassword);
-                }
+                    string adminEmail = "admin@abv.bg";
+                    string adminPassword = "Admin123!";
 
-                if (!await userManager.IsInRoleAsync(adminUser, "Administrator"))
-                {
-                    await userManager.AddToRoleAsync(adminUser, "Administrator");
+                    var adminUser = await userManager.FindByEmailAsync(adminEmail);
+
+                    if (adminUser == null)
+                    {
+                        adminUser = new ApplicationUser
+                        {
+                            UserName = adminEmail,
+                            Email = adminEmail
+                        };
+
+                        var result = await userManager.CreateAsync(adminUser, adminPassword);
+
+                        if (!result.Succeeded)
+                        {
+                            Console.WriteLine("Admin creation failed:");
+                            foreach (var error in result.Errors)
+                            {
+                                Console.WriteLine(error.Description);
+                            }
+                        }
+                    }
+
+                    if (adminUser != null && !await userManager.IsInRoleAsync(adminUser, "Administrator"))
+                    {
+                        await userManager.AddToRoleAsync(adminUser, "Administrator");
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Startup error: {ex.Message}");
             }
 
             if (app.Environment.IsDevelopment())
@@ -78,7 +97,7 @@ namespace BookSwapLite
             }
             else
             {
-                app.UseExceptionHandler("/Error/500");
+                app.UseExceptionHandler("/Error/Error500");
                 app.UseHsts();
             }
 
