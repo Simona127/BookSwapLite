@@ -1,134 +1,209 @@
-## 📚 BookSwapLite
-BookSwapLite is a small ASP.NET Core MVC web application that allows users to exchange books with others through swap requests.
-This project is built to practice the main ASP.NET MVC concepts such as working with databases, creating CRUD pages, and building a clean Bootstrap interface.
-The idea of the application is simple: you can add books, browse what others have posted, and request an exchange.
-This project was created as a practice application for the ASP.NET Fundamentals course at SoftUni.
+# 📚 BookSwapLite
+
+**BookSwapLite** is a full-stack ASP.NET Core MVC web application for exchanging books between users through a structured swap request system.
+
+The platform allows users to list books, browse available listings, send swap requests, and interact through reviews and favorites. The application follows a clean layered architecture and demonstrates best practices in ASP.NET Core development.
+
+---
 
 ## 🚀 Features
- - User Registration and Login (ASP.NET Identity)
- - Browse all available books
- - Add, edit, and delete books (CRUD)
- - Request a book swap from another user
- - Approve or reject swap requests
- - View your sent swap requests
- - View swap requests for your own books
+
+### 🔐 Authentication & Authorization
+
+* User registration and login (ASP.NET Identity)
+* Role-based access (Admin area)
+* Protected routes and actions
+
+### 📚 Books Management
+
+* Create, edit, delete books (CRUD)
+* View all books
+* Detailed book pages
+
+### 🔄 Swap Requests System
+
+* Send swap requests to other users
+* Accept or reject requests
+* Track:
+
+  * Sent requests
+  * Received requests
+
+### ⭐ Favorites
+
+* Add books to favorites
+* View personal favorite books list
+
+### 📝 Reviews System
+
+* Add reviews
+* View reviews for users
+
+### 🛠️ Admin Panel
+
+* Admin dashboard
+* Management capabilities
+
+---
+
+## 🏗️ Architecture
+
+The project follows a **layered architecture (Separation of Concerns)**:
+
+### 📂 Project Structure
+
+* **BookSwap.Data**
+
+  * Entity configurations
+  * EF Core migrations
+  * ApplicationDbContext
+
+* **BookSwap.Data.Models**
+
+  * Book
+  * Genre
+  * SwapRequest
+  * Review
+  * Message
+  * Favorite
+  * ApplicationUser
+
+* **BookSwap.Core**
+
+  * Contracts (Interfaces)
+  * Services (Business Logic)
+  * ViewModels
+
+* **BookSwapLite (Web)**
+
+  * Controllers
+  * Razor Views
+  * Areas (Admin, Identity)
+  * UI (Bootstrap)
+
+* **BookSwap.Tests**
+
+  * Unit tests
+
+---
+
+## 🧩 Design Principles
+
+* Dependency Injection
+* Separation of Concerns
+* Service Layer Architecture
+* Use of ViewModels
+* Clean and maintainable code
+
+---
 
 ## 🛠️ Technologies Used
-ASP.NET Core MVC (.NET 8)
-Entity Framework Core
-SQL Server
-ASP.NET Identity
-Bootstrap 5
-Razor Views + Layout + Partial Views
-Dependency Injection
 
-## 📋 Requirements
-- .NET 8 SDK
-- SQL Server / SQL Server Express
-- Visual Studio 2022 or newer
+* ASP.NET Core MVC (.NET 8)
+* Entity Framework Core
+* SQL Server
+* ASP.NET Identity
+* Bootstrap 5
+* Razor Views
+* LINQ
+* xUnit
 
-## 📂 Project Structure
- - **BookSwap.Data** – Database models and EF Core configuration
- - **BookSwap.Services** – Business logic and services
- - **BookSwap.Web** – Controllers, Views, and UI
+---
 
-## 🧩 Entity Models
-The project includes at least 3 main entities:
-Book
-Genre
-SwapRequest
-(plus Identity User model)
+## 🧪 Unit Testing
 
-## ✅ CRUD Operations
-Full CRUD functionality is implemented for the main entity:
-Books
-Create book
-View all books
-Edit book
-Delete book
+Includes tests for:
+
+* BookService
+* ReviewService
+* SwapRequestService
+
+---
 
 ## 🗄️ Database Setup
-The application uses SQL Server with Entity Framework Core migrations.
 
-Apply migrations:
+Using **Entity Framework Core (Code First)**
+
+Run:
+
 Update-Database
-This will create the database and seed the initial genres.
+
+---
 
 ## ⚙️ Configuration
-Connection string is located in:
+
+Located in:
 
 appsettings.json
 
 Example:
+
 "ConnectionStrings": {
   "DefaultConnection": "Server=localhost;Database=BookSwapLite;Trusted_Connection=True;TrustServerCertificate=True"
 }
 
-## ▶️ How to Run the Project
-Clone the repository:
+---
+
+## ▶️ How to Run
+
+1. Clone repository:
 
 git clone https://github.com/Simona127/BookSwapLite.git
-Open the solution in Visual Studio
 
-Restore NuGet packages
+2. Open in Visual Studio
+3. Restore NuGet packages
+4. Run migrations:
 
-Apply migrations:
 Update-Database
 
-Run the project: Ctrl + F5
+5. Start the project:
 
-## 📌 Navigation
-All pages are accessible through the navigation bar, including:
-Books
-Add Book
-Swap Requests
-Requests for My Books
+Ctrl + F5
+
+---
+
+## 📌 Key Functionalities
+
+* Full CRUD for Books
+* Swap request workflow
+* Favorites system
+* Reviews system
+* Admin area
+* Clean UI
+
+---
 
 ## 📄 Seed Data
-The app automatically adds several genres when the database is created, but books must be added manually through the UI.
 
-Here are some example books that can be used for testing:
+* Genres are seeded automatically
+* Books are added via UI
 
-**The Great Gatsby**
-Title: The Great Gatsby
-Author: F. Scott Fitzgerald
-Genre: Drama
-Condition: Used - Good
-Description: A classic novel about the American dream and lost love.
+---
 
-**Dune**
-Title: Dune
-Author: Frank Herbert
-Genre: Science Fiction
-Condition: Like New
-Description: Epic sci-fi story about politics, power and destiny.
+## 📈 Future Improvements
 
-**Harry Potter and the Philosopher's Stone**
-Title: Harry Potter and the Philosopher's Stone
-Author: J.K. Rowling
-Genre: Fantasy
-Condition: New
-Description: The magical beginning of Harry Potter’s journey.
+* Notifications
+* Chat system
+* Pagination & filtering
+* Image uploads
+* Cloud deployment (Azure)
 
-**Gone Girl**
-Title: Gone Girl
-Author: Gillian Flynn
-Genre: Thriller
-Condition: Used - Acceptable
-Description: A psychological thriller full of twists.
-
-**Sherlock Holmes: The Complete Collection**
-Title: Sherlock Holmes: The Complete Collection
-Author: Arthur Conan Doyle
-Genre: Mystery
-Condition: Used - Good
-Description: Classic detective mysteries featuring Sherlock Holmes.
-
-## 💻 Testing Accounts
-The app uses ASP.NET Identity, so users can create their own accounts locally for testing.
-Example test user:
-- Username: testuser@example.com
-- Password: created locally during testing
+---
 
 ## 👩‍💻 Author
-Developed by Simona Grachka.
+
+**Simona Grachka**
+
+---
+
+## 🏁 Project Purpose
+
+This project demonstrates practical skills in:
+
+* ASP.NET Core MVC
+* Entity Framework Core
+* Authentication & Authorization
+* Clean Architecture
+* Unit Testing
+
+---
